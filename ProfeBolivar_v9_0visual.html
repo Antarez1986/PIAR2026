@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProfeBolivar v9.0 — Profe Luis</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a202c;font-size:13px}
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#2d3a8c 0%,#4f6bef 100%);padding:18px 20px 14px;color:#fff}
+.hdr h1{font-size:22px;font-weight:700;letter-spacing:-.3px}
+.hdr h1 span{font-weight:300;font-size:16px;opacity:.8}
+.hdr p{font-size:11px;opacity:.75;margin-top:3px}
+.vbadge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.18);color:#fff;font-size:11px;padding:3px 10px;border-radius:20px;margin-top:8px;border:1px solid rgba(255,255,255,.25)}
+/* TABS */
+.tabs{background:#fff;border-bottom:1px solid #e2e8f0;display:flex;gap:0;padding:0 16px;overflow-x:auto}
+.tab{flex:1;min-width:70px;padding:12px 8px;background:transparent;border:none;border-bottom:3px solid transparent;cursor:pointer;text-align:center;font-size:12px;font-weight:500;color:#718096;transition:all .15s;white-space:nowrap;font-family:'Segoe UI',Arial,sans-serif}
+.tab.on{color:#4f6bef;border-bottom-color:#4f6bef;font-weight:700}
+.tab:hover:not(.on){color:#4f6bef;background:#f7faff}
+/* PANELS */
+.pnl{display:none;padding:16px 18px 20px;background:#f0f4f8}.pnl.on{display:block}
+/* CARDS */
+.card{background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:12px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card-title{font-size:12px;font-weight:700;color:#4a5568;margin-bottom:10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.5px}
+/* FORM */
+label{display:block;font-size:11px;font-weight:600;color:#4a5568;margin:10px 0 4px}
+input[type=number],input[type=text],select,textarea{width:100%;padding:8px 11px;border-radius:8px;border:1.5px solid #e2e8f0;background:#fff;color:#1a202c;font-size:13px;outline:none;transition:border .15s;font-family:'Segoe UI',Arial,sans-serif}
+input[type=number]:focus,input[type=text]:focus,select:focus,textarea:focus{border-color:#4f6bef;box-shadow:0 0 0 3px rgba(79,107,239,.1)}
+.r2{display:flex;gap:10px}.r2>div{flex:1}
+.r3{display:flex;gap:10px}.r3>div{flex:1}
+/* BUTTONS */
+.btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:10px 12px;border:none;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;margin-top:8px;transition:all .15s;font-family:'Segoe UI',Arial,sans-serif;letter-spacing:.2px}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:#4f6bef;color:#fff}
+.btn-primary:hover{background:#3a56d4}
+.btn-success{background:#38a169;color:#fff}
+.btn-success:hover{background:#2f855a}
+.btn-info{background:#3182ce;color:#fff}
+.btn-info:hover{background:#2b6cb0}
+.btn-warn{background:#d69e2e;color:#fff}
+.btn-warn:hover{background:#b7791f}
+.btn-danger{background:#e53e3e;color:#fff}
+.btn-danger:hover{background:#c53030}
+.btn-ghost{background:#edf2f7;color:#4a5568;border:1.5px solid #e2e8f0}
+.btn-ghost:hover{background:#e2e8f0}
+/* ALERTS */
+.alert{border-radius:9px;padding:10px 13px;font-size:12px;margin-bottom:10px;line-height:1.6;border-left:4px solid}
+.alert-info{background:#ebf4ff;color:#2b6cb0;border-left-color:#3182ce}
+.alert-warn{background:#fffbeb;color:#744210;border-left-color:#d69e2e}
+.alert-success{background:#f0fff4;color:#22543d;border-left-color:#38a169}
+.alert-danger{background:#fff5f5;color:#742a2a;border-left-color:#e53e3e}
+/* MSG */
+.msg{margin-top:10px;font-size:12px;padding:10px 13px;border-radius:9px;min-height:36px;line-height:1.5;font-weight:500}
+.msg.ok{background:#f0fff4;color:#22543d;border:1.5px solid #9ae6b4}
+.msg.warn{background:#fffbeb;color:#744210;border:1.5px solid #f6e05e}
+.msg.err{background:#fff5f5;color:#742a2a;border:1.5px solid #feb2b2}
+.msg.idle{background:#f7fafc;color:#718096;border:1.5px solid #e2e8f0}
+/* FORMULA BOX */
+.fbox{background:linear-gradient(135deg,#ebf4ff,#f0f4ff);border:1.5px solid #bee3f8;border-radius:10px;padding:14px 16px;margin:10px 0;font-size:14px;line-height:2.8;color:#1a202c;text-align:center}
+.pv{font-weight:800;color:#4f6bef;font-size:15px}
+.tok{color:#38a169;font-size:12px;margin-top:5px;font-weight:700;display:flex;align-items:center;gap:5px}
+.terr{color:#e53e3e;font-size:12px;margin-top:5px;font-weight:700;display:flex;align-items:center;gap:5px}
+/* TABLE */
+hr{border:none;border-top:1px solid #e2e8f0;margin:12px 0}
+.sec{font-size:11px;font-weight:700;color:#718096;margin:12px 0 6px;text-transform:uppercase;letter-spacing:.6px}
+.ewrap{max-height:250px;overflow-y:auto;border-radius:9px;border:1.5px solid #e2e8f0;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead{position:sticky;top:0;background:#f7fafc;z-index:1}
+th{padding:8px 8px;color:#4a5568;border-bottom:1.5px solid #e2e8f0;text-align:left;font-size:11px;font-weight:700;white-space:nowrap;text-transform:uppercase;letter-spacing:.3px}
+td{padding:6px 8px;border-bottom:1px solid #f0f4f8;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f7faff}
+.ei{padding:5px 8px;font-size:12px;background:#f7fafc;border:1.5px solid #e2e8f0;border-radius:7px;color:#1a202c;width:56px;text-align:center;font-family:'Segoe UI',Arial,sans-serif;font-weight:600}
+.ei:focus{outline:none;border-color:#4f6bef;background:#fff}
+.nom{font-size:11px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#2d3748;font-weight:500}
+.ntd{color:#a0aec0;font-size:10px;width:20px;font-weight:600}
+/* PILLS */
+.pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap}
+.p-ok{background:#c6f6d5;color:#22543d}
+.p-wn{background:#fefcbf;color:#744210}
+.p-er{background:#fed7d7;color:#742a2a}
+.p-gr{background:#edf2f7;color:#718096}
+.rw td{background:#fffbeb!important}
+.re td{background:#fff5f5!important}
+/* CHECKBOXES */
+.cgrp{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.chk{display:flex;align-items:center;gap:10px;padding:9px 13px;background:#f7fafc;border:1.5px solid #e2e8f0;border-radius:9px;cursor:pointer;font-size:13px;color:#2d3748;font-weight:500;transition:all .15s}
+.chk:hover{background:#ebf4ff;border-color:#bee3f8}
+.chk.selected{background:#ebf4ff;border-color:#4f6bef;color:#2b6cb0}
+.chk input[type=checkbox]{width:16px;height:16px;cursor:pointer;margin:0;flex-shrink:0;accent-color:#4f6bef}
+.chk-num{width:22px;height:22px;border-radius:6px;background:#4f6bef;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+/* STEPS */
+.step{display:flex;align-items:flex-start;gap:10px;margin-bottom:9px;font-size:13px;color:#4a5568;line-height:1.6}
+.sn{width:24px;height:24px;border-radius:50%;background:#4f6bef;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+/* MCALC */
+.mcalc{background:#f7fafc;border:1.5px solid #e2e8f0;border-radius:9px;padding:12px 14px;margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mcalc label{margin:0;font-size:11px;white-space:nowrap;color:#4a5568}
+.mcalc input{width:72px;padding:6px 9px;font-size:13px;font-weight:600}
+.mres{font-weight:700;font-size:13px;color:#4f6bef;min-width:200px}
+/* CREDIT FOOTER */
+.credit-bar{background:#2d3a8c;color:#fff;text-align:center;padding:14px 16px;font-size:11px;line-height:1.9}
+.credit-bar strong{font-size:13px;font-weight:700;display:block;margin-bottom:2px}
+.credit-bar .sub{opacity:.65;font-size:10px}
+/* v9 */
+.vbadge[onclick]{cursor:pointer}.vbadge[onclick]:hover{background:rgba(255,255,255,.3)}
+.subtabs{background:#fff;border-bottom:1px solid #e2e8f0;display:flex;gap:6px;padding:8px 16px;overflow-x:auto}
+.stab{padding:5px 12px;border-radius:16px;font-size:12px;color:#4a5568;background:#edf2f7;cursor:pointer;white-space:nowrap}.stab.on{background:#4f6bef;color:#fff;font-weight:700}
+.home{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:12px}
+.hcard{background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:18px 16px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:6px}
+.hcard:hover{border-color:#4f6bef;box-shadow:0 4px 14px rgba(79,107,239,.18);transform:translateY(-2px)}
+.hcard .hi{font-size:30px}.hcard b{font-size:15px;color:#2d3a8c}.hcard span{font-size:12px;color:#718096;line-height:1.5}
+.seg-title{font-size:12px;font-weight:700;color:#2d3a8c;margin:14px 0 6px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg label{margin:0;display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;cursor:pointer;background:#fff;font-size:13px;font-weight:600;color:#2d3748}
+.seg label small{font-weight:400;color:#718096;font-size:11px}
+.seg label:has(input:checked){border-color:#4f6bef;background:#eef2ff}
+.seg input{display:none}
+.btn-big{padding:14px;font-size:14px}
+details.adv{margin-top:8px}details.adv>summary{cursor:pointer;font-size:12px;font-weight:700;color:#4a5568;padding:10px 12px;background:#edf2f7;border-radius:9px}
+details.adv[open]>summary{margin-bottom:10px}
+.pb-hint{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:9999;background:#1a202c;color:#fff;border-radius:12px;padding:12px 16px;max-width:92vw;width:470px;font-size:12px;line-height:1.7;box-shadow:0 8px 28px rgba(0,0,0,.35);cursor:pointer}
+.pb-hint b{color:#9ae6b4}
+@media(max-width:720px){.pnl{padding:12px}.home,.seg{grid-template-columns:1fr}.tab{min-width:96px;font-size:11px}.hdr{padding:14px}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>ProfeBolivar <span>v9.0</span></h1>
+  <p>Notas, PIAR y comportamiento para webcolegios.com</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px"><span class="vbadge" id="chipIA" onclick="iaProbar()">🤖 IA: comprobando…</span><span class="vbadge" onclick="T('guia')">❓ Cómo funciona</span></div>
+</div>
+
+<div class="tabs">
+  <div class="tab on" data-g="inicio" onclick="T('inicio')">🏠 Inicio</div>
+  <div class="tab" data-g="notas" onclick="T(window.__lastNotas||'formula')">📊 Notas</div>
+  <div class="tab" data-g="comport" onclick="T('comport')">😊 Comportamiento</div>
+  <div class="tab" data-g="piar" onclick="T('piar')">🧩 PIAR</div>
+  <div class="tab" data-g="guia" onclick="T('guia')">📖 Guía</div>
+</div>
+<div class="subtabs" id="subtabs" style="display:none">
+  <span class="stab" data-t="formula" onclick="T('formula')">📐 Fórmula</span>
+  <span class="stab" data-t="generar" onclick="T('generar')">▶ Generar</span>
+  <span class="stab" data-t="notafinal" onclick="T('notafinal')">🎯 Nota Final</span>
+  <span class="stab" data-t="diag" onclick="T('diag')">🩺 Diagnóstico</span>
+  <span class="stab" data-t="limpiar" onclick="T('limpiar')">🗑 Limpiar</span>
+  <span class="stab" data-t="eval" onclick="T('eval')">📝 Eval Final</span>
+</div>
+
+<!-- ══ INICIO ══ -->
+<div class="pnl on" id="pnl-inicio">
+  <div class="card">
+    <div class="card-title">👋 ¿Qué quieres hacer hoy?</div>
+    <div style="font-size:12px;color:#718096;line-height:1.6">Elige un módulo. En todos el patrón es el mismo: <strong>eliges qué quieres → copias el script → lo pegas en la consola (F12) de Webcolegios</strong>.</div>
+  </div>
+  <div class="home">
+    <div class="hcard" onclick="T('formula')"><div class="hi">📊</div><b>Notas</b><span>Fórmula, generar notas exactas, nota final, diagnóstico y limpieza.</span></div>
+    <div class="hcard" onclick="T('piar')"><div class="hi">🧩</div><b>PIAR</b><span>Barreras, ajustes razonables y evaluación, con IA o con plantillas legales.</span></div>
+    <div class="hcard" onclick="T('comport')"><div class="hi">😊</div><b>Comportamiento</b><span>Observaciones personalizadas: felicitaciones y sugerencias según la nota.</span></div>
+    <div class="hcard" onclick="irPulir()"><div class="hi">✍️</div><b>Mejorar redacción</b><span>Pule las Características del Estudiante sin perder datos.</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🔌 Estado</div>
+    <div id="inicioEstado" style="font-size:12px;color:#4a5568;line-height:1.7">Comprobando…</div>
+    <button class="btn btn-info" onclick="iaProbar()">🔌 Probar conexión con la IA</button>
+    <button class="btn btn-ghost" onclick="T('guia')">📖 ¿Primera vez? Lee la guía (3 minutos)</button>
+  </div>
+</div>
+
+<!-- ══ FÓRMULA ══ -->
+<div class="pnl" id="pnl-formula">
+  <div class="alert alert-info">💡 Configura los porcentajes exactos de tu planilla. La suma debe ser <strong>exactamente 100%</strong>.</div>
+  <div class="card">
+    <div class="card-title">⚖️ Pesos de la fórmula</div>
+    <div class="r2">
+      <div><label>Peso COGN (%):</label><input type="number" id="pc" value="30" min="0" max="100" step="5" oninput="upd()"></div>
+      <div><label>Peso PROC (%):</label><input type="number" id="pp" value="30" min="0" max="100" step="5" oninput="upd()"></div>
+    </div>
+    <div class="r2">
+      <div><label>Peso ACTI (%):</label><input type="number" id="pa" value="10" min="0" max="100" step="5" oninput="upd()"></div>
+      <div><label>Peso Bimestral (%):</label><input type="number" id="pb" value="30" min="0" max="100" step="5" oninput="upd()"></div>
+    </div>
+    <div class="fbox">
+      <b>COGN</b> × <span class="pv" id="dc">30%</span> &nbsp;+&nbsp;
+      <b>PROC</b> × <span class="pv" id="dp">30%</span> &nbsp;+&nbsp;
+      <b>ACTI</b> × <span class="pv" id="da">10%</span> &nbsp;+&nbsp;
+      <b>Bimestral</b> × <span class="pv" id="db">30%</span> &nbsp;=&nbsp; <b>Definitiva</b>
+    </div>
+    <div id="tlbl" class="tok">✓ Total: 100% — correcto</div>
+    <div class="r2" style="margin-top:8px">
+      <div><button class="btn btn-ghost" onclick="resetPesos()">🔄 Restablecer 30/30/10/30</button></div>
+      <div><button class="btn btn-ghost" onclick="normPesos()">⚖️ Normalizar a 100%</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔢 Calculadora — nota máxima posible</div>
+    <div class="mcalc">
+      <label>Bimestral del estudiante:</label>
+      <input type="number" id="bprev" value="2.0" min="1" max="5" step="0.1" oninput="calcP()">
+      <span class="mres" id="mres">—</span>
+    </div>
+    <div class="alert alert-info" style="margin-top:10px">ℹ️ Si la definitiva deseada supera el máximo posible, es imposible sin cambiar la bimestral.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 Columnas por desempeño</div>
+    <div class="r3">
+      <div><label>Columnas COGN:</label><select id="nc"><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option></select></div>
+      <div><label>Columnas PROC:</label><select id="np"><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option></select></div>
+      <div><label>Columnas ACTI:</label><select id="na"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ GENERAR ══ -->
+<div class="pnl" id="pnl-generar">
+  <div class="alert alert-info">💡 Escribe la <strong>definitiva deseada</strong> en el 1er campo COGN de cada estudiante. Selecciona qué desempeños llenar y el script calcula los valores exactos.</div>
+
+  <div class="card">
+    <div class="card-title">☑️ Selecciona los desempeños a llenar</div>
+    <div style="font-size:11px;color:#718096;margin-bottom:8px">Puedes elegir cualquier combinación (ej: solo el 2 y el 4, o el 1 y el 3).</div>
+    <div class="cgrp" id="desemp-checks">
+      <label class="chk" id="chk-d1"><input type="checkbox" id="d1" checked onchange="updChk(1)"><span class="chk-num">1</span> Desempeño 1 — primer logro</label>
+      <label class="chk" id="chk-d2"><input type="checkbox" id="d2" onchange="updChk(2)"><span class="chk-num">2</span> Desempeño 2 — segundo logro</label>
+      <label class="chk" id="chk-d3"><input type="checkbox" id="d3" onchange="updChk(3)"><span class="chk-num">3</span> Desempeño 3 — tercer logro</label>
+      <label class="chk" id="chk-d4"><input type="checkbox" id="d4" onchange="updChk(4)"><span class="chk-num" style="background:#9f7aea">4</span> Desempeño 4 — cuarto logro</label>
+      <label class="chk" id="chk-d5"><input type="checkbox" id="d5" onchange="updChk(5)"><span class="chk-num" style="background:#ed8936">5</span> Desempeño 5 — quinto logro</label>
+    </div>
+    <div id="sel-resumen" style="margin-top:8px;font-size:11px;color:#4f6bef;font-weight:600">Seleccionados: Desempeño 1</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚙️ Parámetros de generación</div>
+    <div class="r2">
+      <div><label>Variación máxima (±):</label><input type="number" id="vari" value="0.3" step="0.1" min="0" max="1.5"></div>
+      <div><label>Decimales:</label><select id="dec"><option value="1" selected>1 decimal</option><option value="2">2 decimales</option></select></div>
+    </div>
+    <div class="r2">
+      <div><label>Nota mínima:</label><input type="number" id="nmin" value="1.0" step="0.1" min="1" max="5"></div>
+      <div><label>Nota máxima:</label><input type="number" id="nmax" value="5.0" step="0.1" min="1" max="5"></div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" onclick="cpGen()">▶ Copiar script GENERAR</button>
+  <div class="msg idle" id="mgen">Selecciona los desempeños, configura los parámetros y copia el script.</div>
+</div>
+
+<!-- ══ NOTA FINAL ══ -->
+<div class="pnl" id="pnl-notafinal">
+  <div class="alert alert-success">🎯 Esta pestaña llena <strong>todo a la vez</strong>: los desempeños (COGN/PROC/ACTI) <strong>Y</strong> la casilla <strong>"Evaluación de comprensión final de periodo"</strong>, de modo que la suma ponderada arroje exactamente la <strong>Definitiva (DEFI)</strong> que escribiste en el 1er campo COGN de cada estudiante. Ya no depende de lo que haya en esa casilla antes — la calcula.</div>
+
+  <div class="card">
+    <div class="card-title">📐 Nota final con Bimestral incluido</div>
+    <div style="font-size:12px;color:#4a5568;line-height:1.7">
+      Usa los mismos pesos de la pestaña <strong>Fórmula</strong> (COGN, PROC, ACTI y Bimestral/Evaluación Final). Como los 4 pesos suman 100%, si se calculan <em>todos</em> los componentes (desempeños + Evaluación Final) juntos, <strong>cualquier definitiva entre la nota mínima y máxima siempre es alcanzable</strong> — no quedan casos "imposibles".
+    </div>
+    <div class="fbox" style="margin-top:10px">
+      <b>COGN</b>×<span class="pv" id="nf-dc">30%</span> + <b>PROC</b>×<span class="pv" id="nf-dp">30%</span> + <b>ACTI</b>×<span class="pv" id="nf-da">10%</span> + <b>Eval. Final</b>×<span class="pv" id="nf-db">30%</span> = <b>Definitiva</b>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">☑️ Desempeños a llenar</div>
+    <div style="font-size:11px;color:#718096;margin-bottom:8px">Usa la misma selección de la pestaña <strong>Generar</strong> (arriba).</div>
+    <div id="sel-resumen-nf" style="font-size:11px;color:#4f6bef;font-weight:600">Seleccionados: Desempeño 1</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚙️ Parámetros de generación</div>
+    <div style="font-size:11px;color:#718096">Usa los mismos parámetros de la pestaña <strong>Generar</strong> (variación, decimales, nota mín/máx).</div>
+  </div>
+
+  <button class="btn btn-success" onclick="cpNotaFinal()">🎯 Copiar script NOTA FINAL (incluye Evaluación Final)</button>
+  <div class="msg idle" id="mnf">Escribe la definitiva deseada en el 1er campo COGN de cada estudiante y copia el script.</div>
+</div>
+
+<!-- ══ DIAGNÓSTICO ══ -->
+<div class="pnl" id="pnl-diag">
+  <div class="alert alert-warn">⚠️ Detecta quién NO puede alcanzar la nota deseada con su bimestral actual, cuánto le falta, y ajusta los imposibles automáticamente.</div>
+
+  <div class="card">
+    <div class="card-title">🔍 Paso 1 — Detectar estudiantes</div>
+    <button class="btn btn-warn" onclick="cpDetDiag()">🔍 Copiar script DETECTAR para diagnóstico</button>
+    <div style="font-size:11px;color:#718096;margin-top:5px">Pega en F12→Console → copia el JSON del prompt → pégalo abajo.</div>
+    <label>JSON detectado:</label>
+    <textarea id="jdiag" style="height:60px;resize:vertical;font-size:11px" placeholder='[{"id":"...","nombre":"...","bimestral":"2.5","defDeseada":"4.0"},...]'></textarea>
+    <button class="btn btn-ghost" onclick="analizar()">📊 Analizar casos</button>
+  </div>
+
+  <div id="dres" style="display:none">
+    <div class="card">
+      <div class="card-title">📋 Resultado <span id="dbadges" style="margin-left:6px"></span></div>
+      <div class="ewrap">
+        <table>
+          <thead><tr><th>#</th><th>Nombre</th><th>Bim.</th><th>Deseada</th><th>Máx.</th><th>Estado</th><th>Falta</th></tr></thead>
+          <tbody id="tdiag"></tbody>
+        </table>
+      </div>
+      <button class="btn btn-warn" style="margin-top:10px" onclick="cpAjust()">🪄 Ajustar imposibles al máximo posible</button>
+      <button class="btn btn-ghost" style="margin-top:6px" onclick="cpRep()">📋 Copiar reporte para WhatsApp / notas</button>
+    </div>
+  </div>
+  <div class="msg idle" id="mdiag">Detecta y analiza los estudiantes.</div>
+</div>
+
+<!-- ══ LIMPIAR ══ -->
+<div class="pnl" id="pnl-limpiar">
+  <div class="alert alert-warn">⚠️ Selecciona qué logros borrar. El 1er campo puede conservarse. También puedes borrar aparte la casilla de Evaluación de comprensión final de periodo.</div>
+
+  <div class="card">
+    <div class="card-title">☑️ Logros a limpiar</div>
+    <div class="cgrp">
+      <label class="chk" id="lchk-1"><input type="checkbox" id="cl1" checked onchange="updLChk(1)"><span class="chk-num">1</span> Logro 1 — primer desempeño</label>
+      <label class="chk" id="lchk-2"><input type="checkbox" id="cl2" onchange="updLChk(2)"><span class="chk-num">2</span> Logro 2 — segundo desempeño</label>
+      <label class="chk" id="lchk-3"><input type="checkbox" id="cl3" onchange="updLChk(3)"><span class="chk-num">3</span> Logro 3 — tercer desempeño</label>
+      <label class="chk" id="lchk-4"><input type="checkbox" id="cl4" onchange="updLChk(4)"><span class="chk-num" style="background:#9f7aea">4</span> Logro 4 — cuarto desempeño</label>
+      <label class="chk" id="lchk-5"><input type="checkbox" id="cl5" onchange="updLChk(5)"><span class="chk-num" style="background:#ed8936">5</span> Logro 5 — quinto desempeño</label>
+    </div>
+    <label style="margin-top:10px">¿Conservar el 1er campo del logro 1?</label>
+    <select id="cons">
+      <option value="1" selected>✅ Sí — conservar (es mi nota objetivo)</option>
+      <option value="0">❌ No — borrar también el 1er campo</option>
+    </select>
+    <label class="chk" id="lchk-ev" style="margin-top:10px"><input type="checkbox" id="clEv"><span class="chk-num" style="background:#e53e3e">📝</span> También borrar la casilla "Evaluación de comprensión final de periodo"</label>
+    <button class="btn btn-danger" onclick="cpLimp()">🗑 Copiar script LIMPIAR seleccionados</button>
+    <button class="btn btn-ghost" style="margin-top:6px" onclick="cpLimpAll()">🧹 Copiar LIMPIAR TODO (sin excepciones)</button>
+  </div>
+  <div class="msg idle" id="mlim">Selecciona logros y copia el script.</div>
+</div>
+
+<!-- ══ EVAL FINAL ══ -->
+<div class="pnl" id="pnl-eval">
+  <div class="alert alert-info">ℹ️ Edita la Evaluación Final por estudiante y aplícala directamente en la planilla.</div>
+
+  <div class="card">
+    <div class="card-title">🔍 Paso 1 — Detectar estudiantes</div>
+    <button class="btn btn-info" onclick="cpDet()">🔍 Copiar script DETECTAR estudiantes</button>
+    <div style="font-size:11px;color:#718096;margin-top:5px">Pega en consola → copia el JSON del prompt → pégalo abajo.</div>
+    <label>JSON detectado:</label>
+    <textarea id="jest" style="height:60px;resize:vertical;font-size:11px" placeholder='[{"id":"...","nombre":"...","bimestral":"...","defDeseada":"..."},...]'></textarea>
+    <button class="btn btn-ghost" onclick="cargar()">📥 Cargar tabla de estudiantes</button>
+  </div>
+
+  <div id="twrap" style="display:none">
+    <div class="card">
+      <div class="card-title">📋 Estudiantes <span style="background:#fed7d7;color:#742a2a;font-size:10px;padding:2px 8px;border-radius:10px;margin-left:6px;font-weight:700" id="bnum">0</span></div>
+      <div style="font-size:11px;color:#718096;margin-bottom:6px">Columna <strong>"Def."</strong> = definitiva deseada para cada estudiante.</div>
+      <div class="ewrap">
+        <table>
+          <thead><tr><th>#</th><th>Apellidos / Nombres</th><th>Bim.</th><th>Def.</th></tr></thead>
+          <tbody id="test"></tbody>
+        </table>
+      </div>
+      <button class="btn btn-primary" style="margin-top:10px" onclick="cpFill()">▶ GENERAR desde tabla (fórmula inversa)</button>
+      <button class="btn btn-success" style="margin-top:6px" onclick="cpEval()">✅ Solo EVAL FINAL (notadef)</button>
+    </div>
+  </div>
+  <div class="msg idle" id="meval">Detecta y carga los estudiantes.</div>
+</div>
+
+<!-- ══ COMPORTAMIENTO ══ -->
+<div class="pnl" id="pnl-comport">
+  <div class="alert alert-info">💡 Detecta a los estudiantes de la <strong>Planilla de Comportamiento</strong>, escribe la nota de cada uno, genera observaciones profesionales automáticas (editables) y aplica todo con un solo script.</div>
+
+    <div class="card" style="border:2px solid #4f6bef">
+    <div class="card-title">⚡ Modo rápido con IA — un solo paso en la planilla</div>
+    <div style="font-size:11px;color:#718096;margin-bottom:6px">Con las notas ya escritas en la planilla de Comportamiento, pega el script en su consola: lee cada nombre y nota, redacta de forma personalizada (felicitaciones específicas a notas Superior y Alto; sugerencias concretas a notas Básico y Bajo, con tacto y con acciones) y escribe en "Observación Personalizada". Si ya hay una nota breve del docente en esa casilla, "mejorar" la usa como detalle y la convierte en una observación completa.</div>
+    <label><input type="checkbox" id="cpPila" checked> Enviar solo el nombre de pila (para acertar el género; sin apellidos ni código). Desmarca para anonimizar del todo.</label>
+    <button class="btn btn-success" onclick="iaCopiarComport('vacios')">⚡🤖 Completar solo las observaciones vacías</button>
+    <button class="btn btn-warning" onclick="iaCopiarComport('todo')">⚡♻️ Mejorar lo escrito (usa tu texto como detalle)</button>
+    <div style="font-size:11px;color:#718096;margin-top:4px">¿Quieres agregar un detalle por estudiante (ej. "líder, habla en clase") y editar antes de aplicar? Usa el flujo con vista previa de abajo.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔍 Paso 1 — Detectar estudiantes</div>
+    <button class="btn btn-info" onclick="cpDetComport()">🔍 Copiar script DETECTAR (Comportamiento)</button>
+    <div style="font-size:11px;color:#718096;margin-top:5px">Abre la planilla de <strong>Comportamiento</strong> en webcolegios.com → F12 → Console → pega el script → copia el JSON del cuadro que aparece.</div>
+    <label>JSON detectado:</label>
+    <textarea id="jcomport" style="height:60px;resize:vertical;font-size:11px" placeholder='[{"id":"2020390","nombre":"ABRAHAN ZAMBRANO...","nota":""},...]'></textarea>
+    <button class="btn btn-success" onclick="cpPegarComport()">📥 Pegar del portapapeles y cargar (automático)</button>
+    <button class="btn btn-ghost" onclick="cargarComport()">📥 Cargar desde el cuadro de arriba</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🗑️ Borrar observaciones en la planilla (conservar notas)</div>
+    <div style="font-size:11px;color:#718096;margin-bottom:6px">Borra el texto de "Observación Personalizada" y de las 4 cajitas de todos los estudiantes en la planilla real. La <strong>nota no se toca</strong>. Útil si quieres empezar de cero.</div>
+    <button class="btn btn-warn" onclick="cpBorrarObsComport()">🗑️ Copiar script BORRAR observaciones</button>
+  </div>
+
+  <div id="cwrap" style="display:none">
+    <div class="card">
+      <div class="card-title">📋 Estudiantes <span style="background:#fed7d7;color:#742a2a;font-size:10px;padding:2px 8px;border-radius:10px;margin-left:6px;font-weight:700" id="cbnum">0</span></div>
+      <div style="font-size:11px;color:#718096;margin-bottom:6px">Escribe la <strong>nota de comportamiento</strong> (1.0 a 5.0) de cada estudiante.</div>
+      <div class="ewrap">
+        <table>
+          <thead><tr><th>#</th><th>Apellidos / Nombres</th><th>Nota</th><th>Detalle (opcional)</th></tr></thead>
+          <tbody id="tcomport"></tbody>
+        </table>
+      </div>
+      <button class="btn btn-primary" style="margin-top:10px" onclick="generarPreview(true)">✨🤖 Generar con IA (vista previa editable)</button>
+      <button class="btn btn-ghost" style="margin-top:6px" onclick="generarPreview(false)">🧩 Generar sin IA (plantillas combinadas)</button>
+    </div>
+  </div>
+
+  <div id="cprevwrap" style="display:none">
+    <div class="card">
+      <div class="card-title">✏️ Vista previa — edita o regenera antes de aplicar</div>
+      <div id="cprev"></div>
+      <button class="btn btn-success" style="margin-top:6px" onclick="cpFillComport()">✅ Copiar script APLICAR en la planilla</button>
+      <button class="btn btn-ghost" style="margin-top:6px" onclick="if(confirm('¿Vaciar todas las observaciones generadas y empezar de cero?')){document.getElementById('cprev').innerHTML='';document.getElementById('cprevwrap').style.display='none';sm('mcomport','Vista previa vaciada.','idle');}">🗑️ Vaciar vista previa (empezar de cero)</button>
+    </div>
+  </div>
+
+  <div class="msg idle" id="mcomport">Detecta y carga los estudiantes de Comportamiento.</div>
+</div>
+
+<!-- ══ PIAR ══ -->
+<div class="pnl" id="pnl-piar">
+  <div class="alert alert-info">🧭 <strong>Dos pasos por estudiante:</strong> ① (opcional) mejora las Características del Estudiante; ② diligencia el PIAR. Elige cómo en cada tarjeta, copia el script y pégalo en la consola de la ficha.</div>
+
+    <div class="card" id="cardPulir" style="border:2px solid #38a169">
+    <div class="card-title">① Mejorar Características del Estudiante (opcional)</div>
+    <div class="alert alert-info">Trabaja sobre las dos casillas ya escritas (Descripción General y Lo que hace / requiere apoyo). Conserva todos los datos y características; corrige ortografía y redacción, une lo repetido y te avisa qué datos pide el campo y no aparecen (intereses, expectativas…). Guarda el original: si no te gusta, pega <code>restaurarDescripciones()</code> en la consola.</div>
+    <button class="btn btn-success" onclick="iaCopiarPulir()">✍️🤖 Mejorar redacción CON IA (reescribe y completa con cautela)</button>
+    <button class="btn btn-ghost" onclick="cpPulirLocal()">✍️🧩 Mejorar redacción SIN IA (ortografía, puntuación, duplicados)</button>
+    <div class="msg idle" id="mpulir">Pega el script en la consola de la ficha del estudiante (donde están las Características).</div>
+  </div>
+  <div class="card" id="iaCard" style="border:2px solid #4f6bef">
+    <div class="card-title">② Diligenciar el PIAR</div>
+    <div class="alert alert-info">Sin copiar datos a mano: copias el script, lo pegas en la consola (F12) estando en la <strong>ficha PIAR del estudiante</strong> en Webcolegios, y el script lee lo ya diligenciado (objetivo, descripciones, Otros Ajustes, otros campos), redacta con Gemini y escribe en los campos. Si no hay información suficiente, no inventa: te avisa qué falta.</div>
+    <label>API key de Gemini <span id="iaKeyEstado" style="font-weight:400;color:#718096"></span></label>
+    <input type="password" id="iaKey" placeholder="AQ.… o AIza…" onchange="iaSaveCfg()">
+    <label>Modelos, en orden (si uno está saturado o no existe, pasa al siguiente)</label>
+    <input type="text" id="iaModels" onchange="iaSaveCfg()">
+    <button class="btn btn-ghost" onclick="iaProbar()">🔌 Probar conexión con la IA</button>
+    <label><input type="checkbox" id="iaAnon" checked onchange="iaSaveCfg()"> Anonimizar: el nombre del estudiante NO se envía a Google (se pone localmente al final)</label>
+    <label><input type="checkbox" id="iaOtros" checked onchange="iaSaveCfg()"> Incluir "Otros Ajustes" (perfil transversal)</label>
+    <div class="seg-title">¿Cómo quieres redactar?</div>
+    <div class="seg"><label><input type="radio" name="pmotor" value="ia" checked>🤖 Con IA<small>texto personalizado según el caso</small></label><label><input type="radio" name="pmotor" value="clasico">🧩 Sin IA<small>plantillas con sustento legal (Decreto 1421, DUA)</small></label></div>
+    <div class="seg-title">¿Qué hacer con lo que ya hay escrito?</div>
+    <div class="seg"><label><input type="radio" name="palc" value="vacios" checked>➕ Solo cuadros vacíos<small>no toca lo ya diligenciado</small></label><label><input type="radio" name="palc" value="todo">♻️ Mejorar lo diligenciado<small>reescribe partiendo de lo que hay</small></label></div>
+    <button class="btn btn-primary btn-big" onclick="piarCopiar()">📋 Copiar script PIAR</button>
+    <button class="btn btn-ghost" onclick="iaPlanB()">🔁 Plan B: si el sitio bloquea la IA, el script copia el contexto; pulsa aquí para generar y copiar el script de relleno</button>
+    <div class="msg idle" id="miaia">Pega tu key de Gemini y copia el script que necesites.</div>
+  </div>
+    <details class="adv"><summary>🔧 Avanzado: generadores sueltos (solo asignatura / solo Otros Ajustes) y Plan B</summary>
+
+
+<div class="card">
+    <div class="card-title">🧩 Cómo funciona</div>
+    <div class="step"><div class="sn">1</div><span>Abre la ficha del estudiante en <strong>Seguimiento PIAR → Editar</strong>, en la pantalla de "Ajustes Razonables" del área/período que quieres diligenciar.</span></div>
+    <div class="step"><div class="sn">2</div><span>Copia el script con el botón de abajo y pégalo en la consola (F12) de esa página.</span></div>
+    <div class="step"><div class="sn">3</div><span>El script detecta el área por el texto del objetivo, toma el perfil del estudiante de "Otros Ajustes" (si ya está lleno), y redacta Barreras / Ajustes Razonables / Evaluación de los Ajustes con sustento en el Decreto 1421 de 2017 y el enfoque DUA — solo en los campos que estén vacíos.</span></div>
+    <div class="step"><div class="sn">4</div><span>También completa, si están vacíos, los campos de acción/estrategia de Directivos, Administrativos y Pares en la tabla de Plan de Mejoramiento Institucional.</span></div>
+    <div class="step"><div class="sn">5</div><span>Revisa el texto generado, ajústalo si quieres y <strong>guarda la planilla</strong>. Repite por cada área/asignatura y por cada estudiante — es el mismo script para todos.</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Campos que reconoce</div>
+    <div style="font-size:11px;color:#718096;line-height:1.8">
+      <strong>Por asignatura:</strong> objetivo (lectura), barrera, ajuste, evaluacion (escritura si vacíos)<br>
+      <strong>Otros Ajustes (fuente de características):</strong> otras_barreras, otros_ajustes, otras_evaluaciones (solo lectura)<br>
+      <strong>Plan de mejoramiento:</strong> accion_doce/estra_doce (Docentes), accion_dire/estra_dire, accion_admi/estra_admi, accion_pare (escritura si vacíos)
+    </div>
+  </div>
+
+  <div style="margin:14px 0;border-top:1px dashed var(--bd,#ccc)"></div>
+  <div class="alert alert-info">O por separado:</div>
+  <button class="btn btn-success" onclick="cpPiar()">🧩 Copiar script PIAR — solo asignatura (diligenciar vacíos)</button>
+  <button class="btn btn-warning" onclick="cpPiarForzar()" style="margin-left:8px;">♻️ Copiar script PIAR — solo asignatura (SOBRESCRIBIR)</button>
+  <br><br>
+  <button class="btn btn-success" onclick="cpOtrosAjustes()">🧩 Copiar script Otros Ajustes (diligenciar vacíos)</button>
+  <button class="btn btn-warning" onclick="cpOtrosAjustesForzar()" style="margin-left:8px;">♻️ Copiar script Otros Ajustes (SOBRESCRIBIR)</button>
+  <div class="msg idle" id="mpiar">Copia el script y pégalo en la consola de la ficha del estudiante.</div>
+</details>
+</div>
+
+<!-- ══ GUÍA ══ -->
+<div class="pnl" id="pnl-guia">
+  <div class="card" style="border:2px solid #4f6bef">
+    <div class="card-title">🆕 Primera vez (3 minutos)</div>
+    <div class="step"><div class="sn">1</div><span>En <strong>Inicio</strong> pulsa <strong>🔌 Probar conexión con la IA</strong>. Debe decir "IA lista" con el nombre del modelo. (La key de Gemini va integrada en el archivo; si algún día la cambias, es la línea <code>IA_KEY_FIJA</code>.)</span></div>
+    <div class="step"><div class="sn">2</div><span>Abre Webcolegios en la pantalla que vas a trabajar (ficha PIAR, planilla de Comportamiento o planilla de notas).</span></div>
+    <div class="step"><div class="sn">3</div><span>Aquí eliges la acción y pulsas el botón <strong>Copiar script</strong>. Te aparecerá un recordatorio abajo con los pasos.</span></div>
+    <div class="step"><div class="sn">4</div><span>En Webcolegios: <strong>F12 → Console → Ctrl+V → Enter</strong>. Verás un aviso azul arriba a la derecha mientras trabaja. Revisa el resultado y <strong>guarda la planilla</strong>.</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🧩 PIAR — rutina por estudiante</div>
+    <div class="step"><div class="sn">1</div><span><strong>① Mejorar Características</strong> (opcional): corrige ortografía, une lo repetido y te avisa qué datos faltan (intereses, expectativas…). Con IA reescribe; sin IA solo limpia. Si no te gusta: en la consola escribe <code>restaurarDescripciones()</code>.</span></div>
+    <div class="step"><div class="sn">2</div><span><strong>② Diligenciar el PIAR</strong>: elige <em>Con IA</em> o <em>Sin IA</em> y <em>Solo vacíos</em> o <em>Mejorar lo diligenciado</em> → Copiar script → pégalo en la ficha. Lee lo que ya está escrito, y si hay poca información te avisa en vez de inventar.</span></div>
+    <div class="step"><div class="sn">3</div><span>Para el siguiente estudiante, pega <strong>el mismo script</strong>: se vuelve a leer la ficha que tengas abierta.</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">😊 Comportamiento</div>
+    <div class="step"><div class="sn">⚡</div><span><strong>Modo rápido</strong>: escribe las notas en la planilla, copia el script y pégalo en su consola. Escribe todas las observaciones. "Mejorar lo escrito" usa lo que ya hay en la casilla como detalle.</span></div>
+    <div class="step"><div class="sn">✨</div><span><strong>Con vista previa</strong>: Detectar → Pegar y cargar → agrega un detalle opcional por estudiante → Generar → edita → Aplicar.</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🩹 Si algo falla</div>
+    <div class="step"><div class="sn">!</div><span><strong>"503 / Google saturado"</strong>: es el servicio de Google, no tu key. El script reintenta y cambia de modelo solo; si no, espera uno o dos minutos.</span></div>
+    <div class="step"><div class="sn">!</div><span><strong>"No encontré los cuadros / campos"</strong>: no estás en la pantalla correcta de Webcolegios. El aviso lista los campos que sí ve; pásaselos a Claude.</span></div>
+    <div class="step"><div class="sn">!</div><span><strong>"Sitio bloquea la IA"</strong>: usa el <em>Plan B</em> de la pestaña PIAR (Avanzado) o el flujo con vista previa de Comportamiento.</span></div>
+    <div class="step"><div class="sn">!</div><span><strong>Datos sensibles</strong>: por defecto el nombre completo no se envía a Google (PIAR anonimizado; Comportamiento solo nombre de pila). Revisa siempre el texto antes de guardar.</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Flujo de notas (Fórmula → Generar)</div>
+    <div class="step"><div class="sn">1</div><span>Abre la planilla en webcolegios.com → F12 → Console</span></div>
+    <div class="step"><div class="sn">2</div><span>Pestaña <strong>Fórmula</strong>: configura los pesos (deben sumar 100%) y las columnas por desempeño</span></div>
+    <div class="step"><div class="sn">3</div><span>Pestaña <strong>Diagnóstico</strong>: detecta quién no puede alcanzar la nota con su bimestral actual — hazlo ANTES de generar</span></div>
+    <div class="step"><div class="sn">4</div><span>Escribe la <strong>definitiva deseada</strong> en el 1er campo COGN de cada estudiante en la planilla</span></div>
+    <div class="step"><div class="sn">5</div><span>Pestaña <strong>Generar</strong>: elige los desempeños a llenar → copia el script → pega en consola → Enter. Esta opción usa la casilla de Evaluación Final <em>ya existente</em> en la planilla, sin tocarla.</span></div>
+    <div class="step"><div class="sn">6</div><span>Pestaña <strong>🎯 Nota Final</strong>: úsala cuando quieras que el script también calcule y llene la casilla <strong>"Evaluación de comprensión final de periodo"</strong> — así siempre se alcanza la definitiva exacta, sin casos imposibles.</span></div>
+    <div class="step"><div class="sn">7</div><span>Pestaña <strong>Limpiar</strong>: borra logros específicos sin tocar el 1er campo si necesitas rehacer</span></div>
+    <div class="step"><div class="sn">8</div><span>Pestaña <strong>Eval Final</strong>: detecta, edita y aplica manualmente la nota de comprensión final (uso independiente, sin recalcular desempeños)</span></div>
+    <div class="step"><div class="sn">9</div><span><strong>Guarda la planilla</strong> con el botón de guardar de la página web ⚠️</span></div>
+    <div class="step"><div class="sn">10</div><span>Pestaña <strong>🧩 PIAR</strong>: para estudiantes con discapacidad, ábrela desde la ficha de "Ajustes Razonables" del estudiante y usa esta pestaña para diligenciar automáticamente los campos vacíos (Barreras, Ajustes Razonables, Evaluación de los Ajustes y Plan de Mejoramiento) a partir de lo que ya está escrito en la página.</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📐 Fórmula inversa — cómo funciona</div>
+    <div class="alert alert-success">
+      <strong>objetivo_notas = (definitiva deseada − bimestral × PB) / (PC + PP + PA)</strong><br>
+      Las notas individuales varían ±variación de forma natural, pero su <strong>promedio garantiza la definitiva exacta</strong>.<br><br>
+      Ejemplo: definitiva 3.5, bimestral 2.8 → objetivo = (3.5 − 0.84) / 0.70 = <strong>3.8</strong>
+    </div>
+    <div class="alert alert-warn" style="margin-top:8px">
+      ⚠️ <strong>Nota máxima posible</strong> = 5.0 × (PC+PP+PA) + bimestral × PB.<br>
+      Si la definitiva deseada supera ese techo, el caso es imposible sin cambiar la bimestral.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 Cómo funciona la pestaña "Nota Final"</div>
+    <div class="alert alert-success">
+      Como los 4 pesos (COGN, PROC, ACTI, Bimestral/Evaluación Final) suman 100%, si se generan <strong>todos</strong> a la vez:<br><br>
+      <strong>Evaluación Final = definitiva ÷ 100% + variación aleatoria</strong><br>
+      <strong>objetivo_desempeños = (definitiva − Evaluación Final × PB) / (PC+PP+PA)</strong><br><br>
+      Así la casilla de Evaluación Final y los desempeños quedan <strong>ligados matemáticamente</strong> a la definitiva que escribiste en el 1er campo — nunca queda un caso "imposible", porque ya no depende de un valor previo fijo en esa casilla.
+    </div>
+  </div>
+</div>
+
+<!-- CREDIT FOOTER -->
+<div class="credit-bar">
+  <strong>ProfeBolivar v9.0</strong>
+  Desarrollado para <strong>Profe Luis Alberto Avellaneda</strong><br>
+  Colegio Simón Bolívar · Sede San Martín · Cúcuta, Colombia<br>
+  Tecnología e Informática · Aritmética · Grados 4° y 5°
+  <div class="sub">Con asistencia de Claude · Anthropic · 2026</div>
+</div>
+
+<div id="pbHint" class="pb-hint" style="display:none" onclick="this.style.display='none'"></div>
+<script>
+var DD=[];
+
+function updChk(n){
+  var el=document.getElementById('chk-d'+n);
+  el.classList.toggle('selected',document.getElementById('d'+n).checked);
+  var sel=[];
+  for(var i=1;i<=5;i++){if(document.getElementById('d'+i)&&document.getElementById('d'+i).checked)sel.push('Desempeño '+i);}
+  document.getElementById('sel-resumen').textContent='Seleccionados: '+(sel.length?sel.join(', '):'(ninguno)');
+  var nfr=document.getElementById('sel-resumen-nf');
+  if(nfr)nfr.textContent='Seleccionados: '+(sel.length?sel.join(', '):'(ninguno)');
+}
+
+function updLChk(n){
+  var el=document.getElementById('lchk-'+n);
+  el.classList.toggle('selected',document.getElementById('cl'+n).checked);
+}
+
+function W(){
+  var c=parseFloat(document.getElementById('pc').value)||0;
+  var p=parseFloat(document.getElementById('pp').value)||0;
+  var a=parseFloat(document.getElementById('pa').value)||0;
+  var b=parseFloat(document.getElementById('pb').value)||0;
+  return{c:c/100,p:p/100,a:a/100,b:b/100,tot:c/100+p/100+a/100+b/100,c100:c,p100:p,a100:a,b100:b};
+}
+
+function resetPesos(){
+  document.getElementById('pc').value=30;
+  document.getElementById('pp').value=30;
+  document.getElementById('pa').value=10;
+  document.getElementById('pb').value=30;
+  upd();
+}
+
+function normPesos(){
+  var w=W();
+  var suma=w.c100+w.p100+w.a100+w.b100;
+  if(suma<=0){sm2();resetPesos();return;}
+  document.getElementById('pc').value=(w.c100*100/suma).toFixed(1);
+  document.getElementById('pp').value=(w.p100*100/suma).toFixed(1);
+  document.getElementById('pa').value=(w.a100*100/suma).toFixed(1);
+  document.getElementById('pb').value=(w.b100*100/suma).toFixed(1);
+  upd();
+}
+function sm2(){}
+
+function upd(){
+  var w=W();
+  document.getElementById('dc').textContent=(w.c*100).toFixed(0)+'%';
+  document.getElementById('dp').textContent=(w.p*100).toFixed(0)+'%';
+  document.getElementById('da').textContent=(w.a*100).toFixed(0)+'%';
+  document.getElementById('db').textContent=(w.b*100).toFixed(0)+'%';
+  var nfc=document.getElementById('nf-dc'),nfp=document.getElementById('nf-dp'),nfa=document.getElementById('nf-da'),nfb=document.getElementById('nf-db');
+  if(nfc){nfc.textContent=(w.c*100).toFixed(0)+'%';nfp.textContent=(w.p*100).toFixed(0)+'%';nfa.textContent=(w.a*100).toFixed(0)+'%';nfb.textContent=(w.b*100).toFixed(0)+'%';}
+  var el=document.getElementById('tlbl');
+  if(Math.abs(w.tot-1)<0.005){el.className='tok';el.textContent='✓ Total: 100% — correcto';}
+  else{el.className='terr';el.textContent='✗ Total: '+(w.tot*100).toFixed(0)+'% — debe ser 100%';}
+  calcP();
+}
+
+function calcP(){
+  var w=W();
+  var bv=parseFloat(document.getElementById('bprev').value)||0;
+  var mx=parseFloat((5*(w.c+w.p+w.a)+bv*w.b).toFixed(2));
+  document.getElementById('mres').textContent='Con bimestral '+bv.toFixed(1)+' → máximo posible: '+mx.toFixed(2);
+}
+
+function C(){
+  return{
+    vr:parseFloat(document.getElementById('vari').value)||0.3,
+    dc:parseInt(document.getElementById('dec').value),
+    mn:parseFloat(document.getElementById('nmin').value)||1,
+    mx:parseFloat(document.getElementById('nmax').value)||5,
+    nc:parseInt(document.getElementById('nc').value),
+    np:parseInt(document.getElementById('np').value),
+    na:parseInt(document.getElementById('na').value)
+  };
+}
+
+function getDesemp(){
+  var sel=[];
+  for(var i=1;i<=5;i++){
+    var el=document.getElementById('d'+i);
+    if(el&&el.checked)sel.push(i-1); // índice 0-based
+  }
+  return sel;
+}
+
+function sm(id,t,tp){
+  var e=document.getElementById(id);
+  e.textContent=t;
+  e.className='msg '+(tp||'idle');
+}
+
+var CORE='function R(v,d){return Math.round(v*Math.pow(10,d))/Math.pow(10,d);}function CL(v,mn,mx){return Math.max(mn,Math.min(mx,v));}function SV(id,val,d){var el=document.getElementById(id);if(!el)return;el.value=R(val,d);el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));el.dispatchEvent(new Event("blur",{bubbles:true}));el.dispatchEvent(new Event("keyup",{bubbles:true}));}function GG(obj,n,vr,d,mn,mx){var a=[],s=0;for(var i=0;i<n-1;i++){var v=CL(R(obj+(Math.random()*2-1)*vr,d),mn,mx);a.push(v);s+=v;}a.push(CL(R(obj*n-s,d),mn,mx));return a;}function GEL(){var e={};document.querySelectorAll("input[type=\'text\']").forEach(function(el){if(el.id&&/^\\d+_\\d+_\\d+$/.test(el.id)){var p=el.id.split("_"),est=p[0],l=p[1],col=parseInt(p[2]);if(!e[est])e[est]={};if(!e[est][l])e[est][l]=[];e[est][l].push({col:col,id:el.id,val:el.value});}});return e;}function SVEL(el,val,d){if(!el)return;el.value=R(val,d);el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));el.dispatchEvent(new Event("blur",{bubbles:true}));el.dispatchEvent(new Event("keyup",{bubbles:true}));}function NFEL(est,e){var el=document.getElementById(e+"__9");if(el)return el;var lg=Object.keys(est[e]||{}).sort(),pl=lg[0];if(pl){var cs=est[e][pl];if(cs&&cs.length){for(var i=0;i<cs.length;i++){var ref=document.getElementById(cs[i].id);var row=ref&&ref.closest("tr");if(row){var nd=row.querySelector("input[name=\'notadef\'], input[name*=\'notadef\' i], input[id*=\'notadef\' i]");if(nd)return nd;}}}}return null;}function GB(est){var b={};Object.keys(est).forEach(function(e){var el=NFEL(est,e);b[e]=el?(parseFloat(el.value)||0):0;});return b;}';
+
+function cpGen(){
+  var w=W();
+  if(Math.abs(w.tot-1)>0.005){sm('mgen','❌ Los pesos no suman 100%. Ve a la pestaña Fórmula.','err');return;}
+  var desemp=getDesemp();
+  if(!desemp.length){sm('mgen','❌ Selecciona al menos un desempeño.','err');return;}
+  var c=C(),pn=w.c+w.p+w.a;
+  var s='(function(){'+
+    'var PC='+w.c.toFixed(4)+',PP='+w.p.toFixed(4)+',PA='+w.a.toFixed(4)+',PB='+w.b.toFixed(4)+',PN='+pn.toFixed(4)+';'+
+    'var VR='+c.vr+',DC='+c.dc+',MN='+c.mn+',MX='+c.mx+',NC='+c.nc+',NP='+c.np+',NA='+c.na+';'+
+    'var DESEMP='+JSON.stringify(desemp)+';'+
+    CORE+
+    'var est=GEL(),bim=GB(est),cnt=0,ecnt=0,errs=[],reafirm=[];'+
+    'Object.keys(est).forEach(function(e){'+
+      'var lg=Object.keys(est[e]).sort(),pl=lg[0];if(!pl)return;'+
+      'var cols=est[e][pl].sort(function(a,b){return a.col-b.col;});'+
+      'if(!cols.length||cols[0].val==="")return;'+
+      'var def=parseFloat(cols[0].val);if(isNaN(def))return;'+
+      'var bv=bim[e]||0,obj=(def-bv*PB)/PN,mxP=5*PN+bv*PB;'+
+      'if(obj<MN||obj>MX){errs.push(e+": def="+def+" bim="+bv+" max="+mxP.toFixed(2));return;}'+
+      'ecnt++;'+
+      'DESEMP.forEach(function(li){'+
+        'var l=lg[li];if(!l)return;'+
+        'var cs=est[e][l].sort(function(a,b){return a.col-b.col;});'+
+        'var co=cs.slice(0,NC),pr=cs.slice(NC,NC+NP),ac=cs.slice(NC+NP,NC+NP+NA);'+
+        'var gc=GG(obj,co.length||1,VR,DC,MN,MX),gp=GG(obj,pr.length||1,VR,DC,MN,MX),ga=GG(obj,ac.length||1,VR,DC,MN,MX);'+
+        'co.forEach(function(c,i){if(li===0&&c.col===1)return;SV(c.id,gc[i],DC);cnt++;});'+
+        'pr.forEach(function(c,i){SV(c.id,gp[i],DC);cnt++;});'+
+        'ac.forEach(function(c,i){SV(c.id,ga[i],DC);cnt++;});'+
+      '});'+
+      'SV("def_"+e,def,DC);'+
+      'reafirm.push({id:e,def:def});'+
+    '});'+
+    'setTimeout(function(){reafirm.forEach(function(r){SV("def_"+r.id,r.def,DC);});},1200);'+
+    'var msg="✅ Listo: "+cnt+" campos en "+ecnt+" estudiantes.";'+
+    'if(errs.length)msg+="\\n\\nIMPOSIBLES ("+errs.length+"):\\n"+errs.join("\\n");'+
+    'alert(msg);'+
+  '})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mgen','✅ Script GENERAR copiado. Pégalo en F12 → Console → Enter','ok');});
+}
+
+function cpNotaFinal(){
+  var w=W();
+  if(Math.abs(w.tot-1)>0.005){sm('mnf','❌ Los pesos no suman 100%. Ve a la pestaña Fórmula.','err');return;}
+  var desemp=getDesemp();
+  if(!desemp.length){sm('mnf','❌ Selecciona al menos un desempeño en la pestaña Generar.','err');return;}
+  var c=C(),pn=w.c+w.p+w.a,pt=pn+w.b;
+  var s='(function(){'+
+    'var PC='+w.c.toFixed(4)+',PP='+w.p.toFixed(4)+',PA='+w.a.toFixed(4)+',PB='+w.b.toFixed(4)+',PN='+pn.toFixed(4)+',PT='+pt.toFixed(4)+';'+
+    'var VR='+c.vr+',DC='+c.dc+',MN='+c.mn+',MX='+c.mx+',NC='+c.nc+',NP='+c.np+',NA='+c.na+';'+
+    'var DESEMP='+JSON.stringify(desemp)+';'+
+    CORE+
+    'var est=GEL(),cnt=0,ecnt=0,errs=[],sinEval=[],reafirm=[];'+
+    'Object.keys(est).forEach(function(e){'+
+      'var lg=Object.keys(est[e]).sort(),pl=lg[0];if(!pl)return;'+
+      'var cols=est[e][pl].sort(function(a,b){return a.col-b.col;});'+
+      'if(!cols.length||cols[0].val==="")return;'+
+      'var def=parseFloat(cols[0].val);if(isNaN(def))return;'+
+      'if(def<MN*PT||def>MX*PT){errs.push(e+": def="+def+" fuera de rango posible");return;}'+
+      'var base=def/PT;'+
+      'var ev=CL(R(base+(Math.random()*2-1)*VR,DC),MN,MX);'+
+      'var obj=(def-ev*PB)/(PN||1);'+
+      'if(obj<MN)obj=MN;if(obj>MX)obj=MX;'+
+      'ecnt++;'+
+      'var ndEl=NFEL(est,e);'+
+      'if(ndEl){SVEL(ndEl,ev,DC);}else{sinEval.push(e);}'+
+      'DESEMP.forEach(function(li){'+
+        'var l=lg[li];if(!l)return;'+
+        'var cs=est[e][l].sort(function(a,b){return a.col-b.col;});'+
+        'var co=cs.slice(0,NC),pr=cs.slice(NC,NC+NP),ac=cs.slice(NC+NP,NC+NP+NA);'+
+        'var gc=GG(obj,co.length||1,VR,DC,MN,MX),gp=GG(obj,pr.length||1,VR,DC,MN,MX),ga=GG(obj,ac.length||1,VR,DC,MN,MX);'+
+        'co.forEach(function(c,i){if(li===0&&c.col===1)return;SV(c.id,gc[i],DC);cnt++;});'+
+        'pr.forEach(function(c,i){SV(c.id,gp[i],DC);cnt++;});'+
+        'ac.forEach(function(c,i){SV(c.id,ga[i],DC);cnt++;});'+
+      '});'+
+      'SV("def_"+e,def,DC);'+
+      'reafirm.push({id:e,def:def});'+
+    '});'+
+    'setTimeout(function(){reafirm.forEach(function(r){SV("def_"+r.id,r.def,DC);});},1200);'+
+    'var msg="✅ Listo: "+cnt+" campos + Evaluación Final en "+ecnt+" estudiantes.";'+
+    'if(sinEval.length)msg+="\\n\\n⚠️ Sin casilla Evaluación Final detectada ("+sinEval.length+"): "+sinEval.join(", ")+" — solo se llenaron sus desempeños.";'+
+    'if(errs.length)msg+="\\n\\nFUERA DE RANGO ("+errs.length+"):\\n"+errs.join("\\n");'+
+    'alert(msg);'+
+  '})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mnf','✅ Script NOTA FINAL copiado. Pégalo en F12 → Console → Enter','ok');});
+}
+
+function cpDetDiag(){
+  var s='(function(){var est={};document.querySelectorAll("input[type=\'text\']").forEach(function(el){if(el.id&&/^\\d+_\\d+_\\d+$/.test(el.id)){var p=el.id.split("_");if(!est[p[0]])est[p[0]]={};if(!est[p[0]][p[1]])est[p[0]][p[1]]=[];est[p[0]][p[1]].push({col:parseInt(p[2]),val:el.value});}});function findNF(e){var el=document.getElementById(e+"__9");if(el)return el;var lg=Object.keys(est[e]||{}).sort(),pl=lg[0];if(pl){var cs=est[e][pl];for(var i=0;i<cs.length;i++){var ref=document.getElementById(cs[i].id);var row=ref&&ref.closest("tr");if(row){var nd=row.querySelector("input[name=\'notadef\'], input[name*=\'notadef\' i], input[id*=\'notadef\' i]");if(nd)return nd;}}}return null;}var nom={};document.querySelectorAll("tr").forEach(function(row){var inp=row.querySelector("input[id^=\'def_\']");if(inp){var id=inp.id.replace("def_","");row.querySelectorAll("td").forEach(function(td){var t=td.innerText.trim();if(t.length>4&&t===t.toUpperCase()&&/[A-Z\xc1\xc9\xcd\xd3\xda]/.test(t)&&!nom[id])nom[id]=t;});}});var res=[];Object.keys(est).forEach(function(e){var lg=Object.keys(est[e]).sort(),pl=lg[0],dv="";if(pl){var cs=est[e][pl].sort(function(a,b){return a.col-b.col;});if(cs.length)dv=cs[0].val;}var nfEl=findNF(e);res.push({id:e,nombre:nom[e]||e,bimestral:nfEl?nfEl.value:"",defDeseada:dv});});prompt("Copia este JSON:",JSON.stringify(res));})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mdiag','✅ Script DETECTAR copiado. Pégalo en consola, copia el JSON y pégalo abajo.','ok');});
+}
+
+function analizar(){
+  var w=W();
+  if(Math.abs(w.tot-1)>0.005){sm('mdiag','❌ Los pesos no suman 100%.','err');return;}
+  var raw=document.getElementById('jdiag').value.trim();
+  if(!raw){sm('mdiag','⚠️ Pega el JSON primero.','warn');return;}
+  var data;try{data=JSON.parse(raw);}catch(e){sm('mdiag','❌ JSON inválido.','err');return;}
+  var pn=w.c+w.p+w.a,tb=document.getElementById('tdiag');
+  tb.innerHTML='';DD=[];var cO=0,cW=0,cE=0;
+  data.forEach(function(est,i){
+    var bv=parseFloat(est.bimestral)||0,dd=parseFloat(est.defDeseada)||0;
+    var mx=parseFloat((5*pn+bv*w.b).toFixed(2));
+    var falt=0,estado='',cls='';
+    if(dd<=0){estado='sin dato';}
+    else if(mx>=dd-0.04){estado='alcanzable';cO++;}
+    else{falt=parseFloat((dd-mx).toFixed(2));if(falt<=0.2){estado='límite';cls='rw';cW++;}else{estado='imposible';cls='re';cE++;}}
+    DD.push({id:est.id,nombre:est.nombre,bimestral:bv,defDeseada:dd,maxPosible:mx,faltante:falt,estado:estado});
+    var pill=estado==='alcanzable'?'<span class="pill p-ok">✓ ok</span>':estado==='límite'?'<span class="pill p-wn">⚠ límite</span>':estado==='imposible'?'<span class="pill p-er">✗ imposible</span>':'<span class="pill p-gr">—</span>';
+    var ft=falt>0?'<span style="color:#e53e3e;font-weight:700">+'+falt.toFixed(2)+'</span>':'—';
+    var tr=document.createElement('tr');tr.className=cls;
+    tr.innerHTML='<td class="ntd">'+(i+1)+'</td><td class="nom" title="'+est.nombre+'">'+est.nombre+'</td><td style="text-align:center;font-weight:600">'+bv.toFixed(1)+'</td><td style="text-align:center;font-weight:600">'+(dd||'—')+'</td><td style="text-align:center;font-weight:600">'+mx.toFixed(2)+'</td><td>'+pill+'</td><td style="text-align:center">'+ft+'</td>';
+    tb.appendChild(tr);
+  });
+  var bdg='<span class="pill p-ok">'+cO+' ok</span> ';
+  if(cW)bdg+='<span class="pill p-wn">'+cW+' límite</span> ';
+  if(cE)bdg+='<span class="pill p-er">'+cE+' imposibles</span>';
+  document.getElementById('dbadges').innerHTML=bdg;
+  document.getElementById('dres').style.display='block';
+  var msg=data.length+' estudiantes analizados.';
+  if(cE)msg+=' ❌ '+cE+' no pueden alcanzar la nota deseada.';
+  if(cW)msg+=' ⚠️ '+cW+' en el límite.';
+  sm('mdiag',msg,cE?'err':cW?'warn':'ok');
+}
+
+function cpAjust(){
+  var w=W(),pn=w.c+w.p+w.a,c=C();
+  var imp=DD.filter(function(d){return d.estado==='imposible'||d.estado==='límite';});
+  if(!imp.length){sm('mdiag','⚠️ No hay casos imposibles o límite.','warn');return;}
+  var desemp=getDesemp();if(!desemp.length)desemp=[0];
+  var aj=imp.map(function(d){return{id:d.id,bim:d.bimestral,def:parseFloat((d.maxPosible-0.05).toFixed(1))};});
+  var s='(function(){var DATOS='+JSON.stringify(aj)+';var PC='+w.c.toFixed(4)+',PP='+w.p.toFixed(4)+',PA='+w.a.toFixed(4)+',PB='+w.b.toFixed(4)+',PN='+pn.toFixed(4)+';var VR='+c.vr+',DC='+c.dc+',MN='+c.mn+',MX='+c.mx+',NC='+c.nc+',NP='+c.np+',NA='+c.na+';var DESEMP='+JSON.stringify(desemp)+';'+CORE+'var eL=GEL(),cnt=0;DATOS.forEach(function(d){var obj=(d.def-d.bim*PB)/PN;obj=Math.max(MN,Math.min(MX,obj));SV("def_"+d.id,d.def,DC);var lg=Object.keys(eL[d.id]||{}).sort();DESEMP.forEach(function(li){var l=lg[li];if(!l)return;var cs=eL[d.id][l].sort(function(a,b){return a.col-b.col;});var co=cs.slice(0,NC),pr=cs.slice(NC,NC+NP),ac=cs.slice(NC+NP,NC+NP+NA);var gc=GG(obj,co.length||1,VR,DC,MN,MX),gp=GG(obj,pr.length||1,VR,DC,MN,MX),ga=GG(obj,ac.length||1,VR,DC,MN,MX);co.forEach(function(c,i){if(li===0&&c.col===1)return;SV(c.id,gc[i],DC);cnt++;});pr.forEach(function(c,i){SV(c.id,gp[i],DC);cnt++;});ac.forEach(function(c,i){SV(c.id,ga[i],DC);cnt++;});});});alert("Ajustados "+DATOS.length+" estudiantes al máximo posible ("+cnt+" campos, incluida Definitiva).");})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mdiag','✅ Script AJUSTAR copiado. Pégalo en consola y guarda la planilla.','ok');});
+}
+
+function cpRep(){
+  if(!DD.length){sm('mdiag','⚠️ Analiza primero.','warn');return;}
+  var w=W();
+  var L=['ProfeBolivar v7.0 — Diagnóstico de notas — Profe Luis Alberto Avellaneda','Fórmula: COGN×'+(w.c*100).toFixed(0)+'% + PROC×'+(w.p*100).toFixed(0)+'% + ACTI×'+(w.a*100).toFixed(0)+'% + Bimestral×'+(w.b*100).toFixed(0)+'%',''];
+  var ok=DD.filter(function(d){return d.estado==='alcanzable';}),lm=DD.filter(function(d){return d.estado==='límite';}),ip=DD.filter(function(d){return d.estado==='imposible';});
+  if(ok.length){L.push('✅ ALCANZABLES ('+ok.length+'):');ok.forEach(function(d){L.push('  • '+d.nombre+' | Bim: '+d.bimestral.toFixed(1)+' | Deseada: '+d.defDeseada+' | Máx: '+d.maxPosible.toFixed(2));});}
+  if(lm.length){L.push('');L.push('⚠️ EN EL LÍMITE ('+lm.length+'):');lm.forEach(function(d){L.push('  • '+d.nombre+' | Bim: '+d.bimestral.toFixed(1)+' | Deseada: '+d.defDeseada+' | Máx: '+d.maxPosible.toFixed(2)+' | Falta: +'+d.faltante.toFixed(2));});}
+  if(ip.length){L.push('');L.push('🔴 IMPOSIBLES ('+ip.length+'):');ip.forEach(function(d){L.push('  • '+d.nombre+' | Bim: '+d.bimestral.toFixed(1)+' | Deseada: '+d.defDeseada+' | Máx posible: '+d.maxPosible.toFixed(2)+' | Falta en bimestral: +'+d.faltante.toFixed(2));});}
+  navigator.clipboard.writeText(L.join('\n')).then(function(){sm('mdiag','✅ Reporte copiado al portapapeles.','ok');});
+}
+
+function cpLimp(){
+  var sel=[];
+  for(var i=1;i<=5;i++){var el=document.getElementById('cl'+i);if(el&&el.checked)sel.push(i-1);}
+  var limpEv=document.getElementById('clEv').checked;
+  if(!sel.length&&!limpEv){sm('mlim','⚠️ Selecciona al menos un logro o la casilla de Evaluación Final.','warn');return;}
+  var cons=document.getElementById('cons').value==='1';
+  var s='(function(){var SEL='+JSON.stringify(sel)+',CONS='+cons+',LIMPEV='+limpEv+';var est={};document.querySelectorAll("input[type=\'text\']").forEach(function(el){if(el.id&&/^\\d+_\\d+_\\d+$/.test(el.id)){var p=el.id.split("_");if(!est[p[0]])est[p[0]]={};if(!est[p[0]][p[1]])est[p[0]][p[1]]=[];est[p[0]][p[1]].push({col:parseInt(p[2]),id:el.id});}});var cnt=0;Object.keys(est).forEach(function(e){var lg=Object.keys(est[e]).sort();SEL.forEach(function(li){var l=lg[li];if(!l)return;est[e][l].sort(function(a,b){return a.col-b.col;}).forEach(function(c,i){if(CONS&&li===0&&i===0)return;var el=document.getElementById(c.id);if(el){el.value="";el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));el.dispatchEvent(new Event("blur",{bubbles:true}));cnt++;}});});});var evc=0;if(LIMPEV){document.querySelectorAll("input[name=\'notadef\']").forEach(function(el){el.value="";el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));el.dispatchEvent(new Event("blur",{bubbles:true}));evc++;});}var msg="✅ Borrados: "+cnt+" campos"+(CONS?" (1er campo conservado)":"");if(LIMPEV)msg+=" + "+evc+" casillas de Evaluación Final";alert(msg);})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mlim','✅ Script LIMPIAR copiado.','ok');});
+}
+
+function cpLimpAll(){
+  var limpEv=document.getElementById('clEv').checked;
+  var s='(function(){var LIMPEV='+limpEv+';var c=0;document.querySelectorAll("input[type=\'text\']").forEach(function(el){if(el.id&&/^\\d+_\\d+_\\d+$/.test(el.id)){el.value="";el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));el.dispatchEvent(new Event("blur",{bubbles:true}));c++;}});var evc=0;if(LIMPEV){document.querySelectorAll("input[name=\'notadef\']").forEach(function(el){el.value="";el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));el.dispatchEvent(new Event("blur",{bubbles:true}));evc++;});}var msg="✅ Borrados: "+c+" campos en total";if(LIMPEV)msg+=" + "+evc+" casillas de Evaluación Final";alert(msg);})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mlim','✅ Script LIMPIAR TODO copiado.','ok');});
+}
+
+function cpDet(){
+  var s='(function(){var est={};document.querySelectorAll("input[type=\'text\']").forEach(function(el){if(el.id&&/^\\d+_\\d+_\\d+$/.test(el.id)){var p=el.id.split("_");if(!est[p[0]])est[p[0]]={};if(!est[p[0]][p[1]])est[p[0]][p[1]]=[];est[p[0]][p[1]].push({col:parseInt(p[2]),val:el.value});}});function findNF(e){var el=document.getElementById(e+"__9");if(el)return el;var lg=Object.keys(est[e]||{}).sort(),pl=lg[0];if(pl){var cs=est[e][pl];for(var i=0;i<cs.length;i++){var ref=document.getElementById(cs[i].id);var row=ref&&ref.closest("tr");if(row){var nd=row.querySelector("input[name=\'notadef\'], input[name*=\'notadef\' i], input[id*=\'notadef\' i]");if(nd)return nd;}}}return null;}var nom={};document.querySelectorAll("tr").forEach(function(row){var inp=row.querySelector("input[id^=\'def_\']");if(inp){var id=inp.id.replace("def_","");row.querySelectorAll("td").forEach(function(td){var t=td.innerText.trim();if(t.length>4&&t===t.toUpperCase()&&/[A-Z\xc1\xc9\xcd\xd3\xda]/.test(t)&&!nom[id])nom[id]=t;});}});var res=[];Object.keys(est).forEach(function(e){var lg=Object.keys(est[e]).sort(),pl=lg[0],dv="";if(pl){var cs=est[e][pl].sort(function(a,b){return a.col-b.col;});if(cs.length)dv=cs[0].val;}var nfEl=findNF(e);res.push({id:e,nombre:nom[e]||e,bimestral:nfEl?nfEl.value:"",defDeseada:dv});});prompt("Copia este JSON:",JSON.stringify(res));})();';
+  navigator.clipboard.writeText(s).then(function(){sm('meval','✅ Script DETECTAR copiado. Pégalo en consola y trae el JSON aquí.','ok');});
+}
+
+function cargar(){
+  var raw=document.getElementById('jest').value.trim();
+  if(!raw){sm('meval','⚠️ Pega el JSON primero.','warn');return;}
+  var data;try{data=JSON.parse(raw);}catch(e){sm('meval','❌ JSON inválido.','err');return;}
+  var tb=document.getElementById('test');tb.innerHTML='';
+  data.forEach(function(est,i){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td class="ntd">'+(i+1)+'</td><td class="nom" title="'+est.nombre+'">'+est.nombre+'</td><td style="text-align:center;font-weight:600;color:#d69e2e">'+(est.bimestral||'—')+'</td><td><input class="ei" type="text" value="'+(est.defDeseada||'')+'" data-id="'+est.id+'" data-bim="'+(est.bimestral||0)+'" placeholder="0.0"></td>';
+    tb.appendChild(tr);
+  });
+  document.getElementById('bnum').textContent=data.length;
+  document.getElementById('twrap').style.display='block';
+  sm('meval',data.length+' estudiantes cargados. Edita la columna Def. y copia el script.','ok');
+}
+
+function cpFill(){
+  var w=W();if(Math.abs(w.tot-1)>0.005){sm('meval','❌ Los pesos no suman 100%.','err');return;}
+  var c=C(),pn=w.c+w.p+w.a,datos=[];
+  var desemp=getDesemp();if(!desemp.length)desemp=[0];
+  document.querySelectorAll('#test tr').forEach(function(row){var inp=row.querySelector('input[data-id]');if(inp&&inp.value.trim()!=='')datos.push({id:inp.dataset.id,bim:parseFloat(inp.dataset.bim)||0,def:parseFloat(inp.value)});});
+  if(!datos.length){sm('meval','⚠️ No hay datos.','warn');return;}
+  var s='(function(){var DATOS='+JSON.stringify(datos)+';var PC='+w.c.toFixed(4)+',PP='+w.p.toFixed(4)+',PA='+w.a.toFixed(4)+',PB='+w.b.toFixed(4)+',PN='+pn.toFixed(4)+';var VR='+c.vr+',DC='+c.dc+',MN='+c.mn+',MX='+c.mx+',NC='+c.nc+',NP='+c.np+',NA='+c.na+';var DESEMP='+JSON.stringify(desemp)+';'+CORE+'var eL=GEL(),cnt=0,errs=[];DATOS.forEach(function(d){var obj=(d.def-d.bim*PB)/PN;if(obj<MN||obj>MX){errs.push(d.id+" max="+(5*PN+d.bim*PB).toFixed(2));return;}SV("def_"+d.id,d.def,DC);var lg=Object.keys(eL[d.id]||{}).sort();DESEMP.forEach(function(li){var l=lg[li];if(!l)return;var cs=eL[d.id][l].sort(function(a,b){return a.col-b.col;});var co=cs.slice(0,NC),pr=cs.slice(NC,NC+NP),ac=cs.slice(NC+NP,NC+NP+NA);var gc=GG(obj,co.length||1,VR,DC,MN,MX),gp=GG(obj,pr.length||1,VR,DC,MN,MX),ga=GG(obj,ac.length||1,VR,DC,MN,MX);co.forEach(function(c,i){if(li===0&&c.col===1)return;SV(c.id,gc[i],DC);cnt++;});pr.forEach(function(c,i){SV(c.id,gp[i],DC);cnt++;});ac.forEach(function(c,i){SV(c.id,ga[i],DC);cnt++;});});});var msg="✅ Listo: "+cnt+" campos + Definitiva exacta en "+DATOS.length+" estudiantes.";if(errs.length)msg+="\\nImposibles: "+errs.join(", ");alert(msg);})();';
+  navigator.clipboard.writeText(s).then(function(){sm('meval','✅ Script GENERAR desde tabla copiado. Pégalo en consola y guarda.','ok');});
+}
+
+function cpEval(){
+  var upd=[];
+  document.querySelectorAll('#test tr').forEach(function(row){var inp=row.querySelector('input[data-id]');if(inp&&inp.value.trim()!=='')upd.push({id:inp.dataset.id,val:inp.value.trim()});});
+  if(!upd.length){sm('meval','⚠️ No hay notas para aplicar.','warn');return;}
+  var s='(function(){var U='+JSON.stringify(upd)+';var c=0,ne=0;U.forEach(function(u){var el=document.getElementById(u.id+"__9");if(!el){var ref=document.querySelector("input[type=\'text\'][id^=\'"+u.id+"_\']");var row=ref&&ref.closest("tr");if(row)el=row.querySelector("input[name=\'notadef\'], input[name*=\'notadef\' i], input[id*=\'notadef\' i]");}if(!el)el=document.querySelector("input[name=\'notadef\'][id*=\'"+u.id+"\']");if(el){el.value=u.val;el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));el.dispatchEvent(new Event("blur",{bubbles:true}));c++;}else{ne++;}});var msg="✅ Notas Eval Final aplicadas: "+c;if(ne)msg+=" — ⚠️ "+ne+" no encontradas";alert(msg);})();';
+  navigator.clipboard.writeText(s).then(function(){sm('meval','✅ Script EVAL FINAL copiado. Pégalo en consola y guarda.','ok');});
+}
+
+// ══ COMPORTAMIENTO ══
+
+function cpDetComport(){
+  var s='(function(){var codes={};document.querySelectorAll("input[type=\'text\']").forEach(function(el){var m=el.id.match(/^n(\\d{4,10})$/);if(m)codes[m[1]]={};});document.querySelectorAll(".behavior-student-name").forEach(function(el){var row=el.closest("tr");var inp=row&&row.querySelector("input[id^=\'n\']");if(inp){var m=inp.id.match(/^n(\\d{4,10})$/);if(m&&codes[m[1]]){var t=el.textContent.trim().replace(/\\s+/g," ").replace(/["\\\\]/g,"");codes[m[1]].nombre=t;}}});var res=Object.keys(codes).filter(function(id){return codes[id].nombre;}).map(function(id){var nEl=document.getElementById("n"+id);return {id:id,nombre:codes[id].nombre,nota:nEl?nEl.value:""};});var j=JSON.stringify(res);if(typeof copy==="function"){copy(j);alert("✅ "+res.length+" estudiantes copiados. Vuelve a ProfeBolivar y pulsa Pegar y cargar.");}else{prompt("Copia este JSON:",j);}})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mcomport','✅ Script DETECTAR copiado. Pégalo en consola de la planilla de Comportamiento y copia el JSON del cuadro.','ok');});
+}
+
+function toTitleComport(s){
+  return (s||'').toLowerCase().replace(/\s+/g,' ').trim().split(' ').map(function(w){return w?w.charAt(0).toUpperCase()+w.slice(1):w;}).join(' ');
+}
+
+function parseComportLenient(raw){
+  var out=[];
+  var re=/"id"\s*:\s*"([^"]*)"\s*,\s*"nombre"\s*:\s*"([^{}]*?)"\s*,\s*"nota"\s*:\s*"([^"]*)"/g;
+  var m;
+  while((m=re.exec(raw))){
+    out.push({id:m[1], nombre:m[2].replace(/\\"/g,'"').replace(/\\\\/g,'\\'), nota:m[3]});
+  }
+  return out;
+}
+
+function cargarComport(){
+  var raw=document.getElementById('jcomport').value;
+  if(!raw||!raw.trim()){sm('mcomport','⚠️ Pega el JSON primero.','warn');return;}
+  raw=raw.trim();
+  raw=raw.replace(/[\u201C\u201D]/g,'"').replace(/[\u2018\u2019]/g,"'").replace(/[\u200B\uFEFF\u00A0]/g,function(ch){return ch==='\u00A0'?' ':'';});
+  raw=raw.replace(/("nombre"\s*:\s*")([^{}]*?)("\s*,\s*"nota")/g,function(_,a,mid,b){return a+mid.replace(/"/g,'')+b;});
+  var i0=raw.indexOf('['),i1=raw.lastIndexOf(']');
+  if(i0>-1&&i1>i0)raw=raw.slice(i0,i1+1);
+  var totalIds=(raw.match(/"id"\s*:/g)||[]).length;
+  var data,recovered=false;
+  try{data=JSON.parse(raw);}
+  catch(e){
+    data=parseComportLenient(raw);
+    if(!data.length){sm('mcomport','❌ JSON inválido: '+e.message,'err');return;}
+    recovered=true;
+  }
+  if(!Array.isArray(data)||!data.length){sm('mcomport','⚠️ El JSON no tiene estudiantes.','warn');return;}
+  var tb=document.getElementById('tcomport');tb.innerHTML='';
+  data.forEach(function(est,i){
+    var nom=toTitleComport(est.nombre);
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td class="ntd">'+(i+1)+'</td><td class="nom" title="'+nom+'">'+nom+'</td><td><input class="ei" type="text" value="'+(est.nota||'')+'" data-id="'+est.id+'" data-nombre="'+nom.replace(/"/g,'&quot;')+'" placeholder="0.0"></td><td><input class="ei" type="text" data-det="1" data-id="'+est.id+'" style="width:190px" placeholder="Ej: líder, habla en clase"></td>';
+    tb.appendChild(tr);
+  });
+  document.getElementById('cbnum').textContent=data.length;
+  document.getElementById('cwrap').style.display='block';
+  document.getElementById('cprevwrap').style.display='none';
+  var falt=totalIds-data.length;
+  var msg=(recovered?'⚠️ Había un carácter que rompía el JSON estándar; se recuperaron ':'')+data.length+' estudiantes'+(recovered?' con un análisis alternativo.':' cargados.');
+  if(falt>0)msg+=' ⚠️ '+falt+' estudiante(s) no se pudieron recuperar (probablemente su nombre tiene un carácter especial) — vuelve a correr el DETECTAR o revísalos manualmente.';
+  msg+=' Escribe la nota de cada uno y genera las observaciones.';
+  sm('mcomport',msg,falt>0?'warn':'ok');
+}
+
+// ══ COMPORTAMIENTO v2 (IA + plantillas combinatorias) ══
+function nombreNat(s,txt,pila){
+  var w=(s||'').trim().replace(/\s+/g,' ').split(' ');
+  if(w.length<2)return (s||'').charAt(0).toUpperCase()+(s||'').slice(1).toLowerCase();
+  var P=/^(de|del|la|las|los|y|san|santa)$/i,u=[],b=[];
+  w.forEach(function(x){b.push(x);if(!P.test(x)){u.push(b.join(' '));b=[];}});if(b.length)u.push(b.join(' '));
+  var nA=u.length>=3?2:1,arr=pila?u.slice(nA):u.slice(nA).concat(u.slice(0,nA)),r=arr.join(' ').toLowerCase().split(' ');
+  var AC={jose:'José',maria:'María',andres:'Andrés',sebastian:'Sebastián',jesus:'Jesús',angel:'Ángel',ivan:'Iván',adrian:'Adrián',julian:'Julián',nicolas:'Nicolás',hernan:'Hernán',ramon:'Ramón',fabian:'Fabián',joaquin:'Joaquín',lucia:'Lucía',rocio:'Rocío',sofia:'Sofía',perez:'Pérez',gomez:'Gómez',rodriguez:'Rodríguez',gonzalez:'González',lopez:'López',hernandez:'Hernández',sanchez:'Sánchez',ramirez:'Ramírez',diaz:'Díaz',jimenez:'Jiménez',martinez:'Martínez',garcia:'García',fernandez:'Fernández',bolivar:'Bolívar',mogollon:'Mogollón',mendez:'Méndez',velez:'Vélez',suarez:'Suárez',gutierrez:'Gutiérrez',alvarez:'Álvarez',benitez:'Benítez',ordonez:'Ordóñez',rios:'Ríos',paez:'Páez',munoz:'Muñoz',pena:'Peña',nino:'Niño',ibanez:'Ibáñez',castaneda:'Castañeda'};
+  var CL={a:'[aá]',e:'[eé]',i:'[ií]',o:'[oó]',u:'[uúü]',n:'[nñ]'},LT='A-Za-zÁÉÍÓÚáéíóúÑñ';
+  return r.map(function(x,i){
+    if(i>0&&/^(de|del|la|las|los|y)$/.test(x))return x;
+    var q=(txt||'').match(new RegExp('(?<!['+LT+'])'+x.replace(/[aeiounAEIOUN]/g,function(c){return CL[c.toLowerCase()];})+'(?!['+LT+'])','i'));
+    if(q&&q[0]!==q[0].toUpperCase())return q[0].charAt(0).toUpperCase()+q[0].slice(1);
+    return AC[x]||x.charAt(0).toUpperCase()+x.slice(1);
+  }).join(' ');
+}
+var IA_VALORES=['el respeto','la responsabilidad','la colaboración con sus compañeros','la puntualidad y el cumplimiento','el liderazgo positivo','la escucha y el buen trato','la solidaridad','el autocontrol','la honestidad','el cuidado de los espacios y materiales','la participación respetuosa','la disposición para ayudar'];
+var IA_FOCOS=['el cumplimiento de los acuerdos del aula','la atención a las indicaciones','el respeto de los turnos de palabra','el autocontrol en momentos de dispersión','el trato cordial con todos los compañeros','la responsabilidad con sus deberes','el cuidado de materiales y espacios','la constancia en el buen comportamiento'];
+var IA_SYS_COMPORT=[
+'Eres director de grupo colombiano con muchos años de experiencia redactando las observaciones de comportamiento del boletín. Escribes con calidez y criterio pedagógico, como quien conoce al grupo, no como una plantilla.',
+'ESCALA (por la nota): Superior 4.6-5.0, Alto 4.0-4.5, Básico 3.0-3.9, Bajo 1.0-2.9. El nivel marca el tono:\n- Superior: felicitación sincera y ESPECÍFICA (nada de "excelente comportamiento" genérico): destaca el valor de "enfoque" y otro afín, con orgullo, y cierra con un reto o invitación (ser ejemplo, mediar, apoyar a compañeros, representar al grupo).\n- Alto: reconoce lo positivo, plantea UNA meta concreta y alcanzable para llegar a Superior (el "enfoque") y anima.\n- Básico: reconoce al menos un aspecto positivo, nombra con tacto 1-2 aspectos por mejorar en conducta observable (el "enfoque"), propone un compromiso concreto para el próximo periodo e involucra a la familia.\n- Bajo: tono respetuoso, firme y esperanzador; habla de conductas y de su efecto en la convivencia, nunca etiquetas sobre la persona; reconoce que puede mejorar y propone 2 acciones concretas (compromiso de convivencia, seguimiento del director de grupo u orientación escolar, acompañamiento del acudiente) en coherencia con el manual de convivencia y la Ley 1620 de 2013, mencionados con naturalidad y sin números de artículo.',
+'VERACIDAD: no inventes hechos. Si "detalle_del_docente" está vacío, redacta de forma general y razonable sobre el periodo, SIN episodios, fechas, nombres de compañeros ni sanciones concretas. Si trae texto (puede ser una nota breve o una observación previa), incorpora sus hechos con naturalidad y mejora la redacción sin perder ninguno.',
+'VARIEDAD: cada observación del lote debe ser claramente distinta de las demás: aperturas diferentes (el nombre al inicio, en medio o después de una subordinada), distintos valores o focos, distinta estructura y extensión, y cierres propios; ninguna frase repetida entre estudiantes. Prohibido arrancar con "Felicitaciones a [nombre] por su excelente comportamiento" y frases hechas como "cabe destacar" o "es fundamental".',
+'FORMATO: un solo párrafo de 35 a 70 palabras (Bajo hasta 80), sin viñetas ni emojis, español de Colombia, voz del docente. Usa {N} donde va el nombre de pila (máximo una vez); deduce el género por el nombre. Si el nombre viene "(oculto)", usa {N} igualmente y evita adjetivos con marca de género.',
+'SALIDA: SOLO un JSON válido: {"obs":{"<id>":"texto",...}} con TODOS los ids recibidos.'
+].join('\n\n');
+
+async function iaComportGen(cfg,items,prog){
+  function nivel(n){return n>=4.6?'Superior':n>=4?'Alto':n>=3?'Básico':'Bajo';}
+  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  var out={},CH=10,tot=items.length;
+  for(var s=0;s<tot;s+=CH){
+    var ch=items.slice(s,s+CH),vp=shuffle(cfg.valores),fp=shuffle(cfg.focos),vi=0,fi=0;
+    var lote=ch.map(function(it){var n=parseFloat(String(it.nota).replace(',','.')),nv=nivel(n),alto=(nv==='Superior'||nv==='Alto');
+      return {id:it.k,nombre:cfg.pila?it.pila:'(oculto)',nota:n,nivel:nv,enfoque:alto?vp[vi++%vp.length]:fp[fi++%fp.length],detalle_del_docente:it.det||''};});
+    if(prog)prog('⏳ Redactando observaciones '+(s+1)+'–'+Math.min(s+CH,tot)+' de '+tot+'…');
+    var r=await iaGemini(cfg,cfg.sys,'Redacta una observación por estudiante.\n'+JSON.stringify(lote,null,1)+'\n\nSalida: {"obs":{"<id>":"texto",...}} con TODOS los ids.');
+    var o=r.obs||r;
+    ch.forEach(function(it){var t=o[it.k];if(typeof t==='string'&&t.trim())out[it.k]=t.trim().replace(/\{N\}/g,it.pila||'el estudiante');});
+    if(s+CH<tot)await new Promise(function(f){setTimeout(f,1200);});
+  }
+  return out;
+}
+
+// Modo rápido: se pega en la consola de la planilla de Comportamiento.
+function iaComportPage(cfg,modo){
+  var tb=document.getElementById('__pbToast')||document.body.appendChild(document.createElement('div'));
+  tb.id='__pbToast';tb.style.cssText='position:fixed;top:10px;right:10px;z-index:99999;background:#2d3a8c;color:#fff;padding:10px 14px;border-radius:8px;font:13px sans-serif;max-width:320px;box-shadow:0 2px 8px #0005';
+  function T(t){tb.textContent=t;}cfg.status=T;
+  function fire(el){['input','change','keyup','blur'].forEach(function(ev){el.dispatchEvent(new Event(ev,{bubbles:true}));});}
+  var items=[],sinNota=0,sinCampo=0,lleno=0;
+  document.querySelectorAll('.behavior-student-name').forEach(function(el){
+    var row=el.closest('tr'),inp=row&&row.querySelector("input[id^='n']");if(!inp)return;
+    var m=inp.id.match(/^n(\d{4,10})$/);if(!m)return;
+    var nota=parseFloat((inp.value||'').replace(',','.'));if(!(nota>=1&&nota<=5)){sinNota++;return;}
+    var ob=document.getElementById('obs'+m[1]);if(!ob){sinCampo++;return;}
+    var cur=ob.value.trim();if(modo==='vacios'&&cur){lleno++;return;}
+    var nom=el.textContent.trim().replace(/\s+/g,' ');
+    items.push({k:m[1],pila:nombreNat(nom,'',true),nota:nota,det:modo==='todo'?cur:''});
+  });
+  if(!items.length){T('ℹ️ Nada que generar');alert('ℹ️ No hay estudiantes para procesar.'+(lleno?'\n'+lleno+' ya tienen observación (usa "MEJORAR lo escrito" para rehacerlas).':'')+(sinNota?'\n'+sinNota+' no tienen nota escrita.':''));return;}
+  iaComportGen(cfg,items,T).then(function(out){
+    var c=0,falt=[];
+    items.forEach(function(it){var ob=document.getElementById('obs'+it.k);if(out[it.k]&&ob){ob.value=out[it.k];fire(ob);c++;}else falt.push(it.pila);});
+    T('✅ '+c+' observaciones listas');
+    alert('✅ Observaciones escritas: '+c+' de '+items.length+'.'+(falt.length?'\n⚠️ Sin respuesta de la IA para: '+falt.join(', ')+' (corre el script de nuevo con "completar").':'')+(sinNota?'\nℹ️ '+sinNota+' sin nota (omitidos).':'')+(lleno?'\nℹ️ '+lleno+' ya tenían observación (no se tocaron).':'')+'\nRevisa y guarda la planilla.');
+  }).catch(function(e){T('❌ '+e.message);alert('❌ '+e.message+(e.red?'\nEste sitio parece bloquear llamadas externas; usa el flujo con vista previa desde ProfeBolivar.':''));});
+}
+
+// ── Plantillas combinatorias (sin IA): 3 piezas por nivel → decenas de combinaciones ──
+function obsPartes(){return {
+ excelente:{
+  a:['{N} cierra el periodo con un comportamiento sobresaliente que merece ser reconocido.','Es un gusto felicitar a {N} por la forma ejemplar en que convivió con su grupo durante este periodo.','El comportamiento de {N} ha sido un verdadero referente para el grupo a lo largo del periodo.','Se reconoce con satisfacción el compromiso de {N} con la sana convivencia escolar.','{N} ha demostrado una convivencia respetuosa y madura que llena de orgullo a sus docentes.'],
+  b:['Su respeto hacia compañeros y docentes, su responsabilidad con los acuerdos de aula y su disposición para colaborar fortalecen el ambiente de clase.','Se destacan su puntualidad, su trato cordial y la constancia con que cumple las normas sin necesidad de recordatorios.','Sus actitudes de escucha, solidaridad y autocontrol aportan de manera positiva al clima del curso.','Cumple los acuerdos de convivencia con naturalidad y aporta con su ejemplo al buen ambiente del salón.'],
+  c:['Se le invita a seguir siendo ejemplo y a apoyar a quienes necesitan una voz amiga en el grupo.','Se le anima a asumir roles de liderazgo positivo, como mediar en pequeños desacuerdos o representar al grupo.','Que continúe cultivando estos valores: son una fortaleza que le abrirá muchas puertas.','Se espera que mantenga este nivel e inspire a sus compañeros con su actitud.']},
+ bueno:{
+  a:['{N} presenta un buen comportamiento durante el periodo, con una actitud respetuosa hacia compañeros y docentes.','Se reconoce el esfuerzo de {N} por mantener una convivencia armónica en el aula.','El comportamiento de {N} ha sido adecuado y se evidencia su disposición para respetar las normas del curso.','{N} muestra una actitud responsable y respetuosa que favorece el trabajo en clase.'],
+  b:['Cumple en general los acuerdos de convivencia; ocasionalmente requiere un recordatorio para mantener el autocontrol o la atención a las indicaciones.','Su trato cordial es una fortaleza; puede seguir fortaleciendo la constancia en el cumplimiento de los acuerdos del aula.','Hay momentos de dispersión o conversación que, con mayor autorregulación, no afectarían el ritmo de la clase.','Responde bien a las orientaciones y, con un poco más de constancia, puede consolidar su comportamiento.'],
+  c:['Con un esfuerzo adicional puede alcanzar el desempeño Superior en el próximo periodo.','Se le motiva a fijarse la meta de mantener su buen comportamiento de forma constante.','Se espera que continúe avanzando y asuma mayores compromisos con la convivencia del grupo.','Con el acompañamiento de su familia seguirá fortaleciendo estos hábitos.']},
+ aceptable:{
+  a:['El comportamiento de {N} durante el periodo se ubica en un nivel básico, con aspectos positivos y otros por fortalecer.','Se reconoce la disposición de {N} para convivir con sus compañeros y se identifican aspectos de la convivencia que conviene mejorar.','{N} cumple de manera parcial con los acuerdos de convivencia del curso.','Se invita a {N} a fortalecer su comportamiento escolar, partiendo de las cualidades que ya demuestra.'],
+  b:['Requiere mejorar la atención a las indicaciones, el respeto por los turnos de palabra y el cumplimiento constante de los acuerdos del aula.','Se observan momentos en que el autocontrol y la responsabilidad con sus deberes disminuyen y afectan el ambiente de clase.','Necesita mayor constancia en el trato respetuoso y en el seguimiento de las normas, de modo que no dependa de recordatorios.','Algunas actitudes en clase interfieren con su propio aprendizaje y con el de sus compañeros.'],
+  c:['Como compromiso para el próximo periodo, se acuerda revisar en casa y en el aula una meta concreta de convivencia.','Se recomienda el acompañamiento de la familia y el diálogo permanente con el director de grupo para consolidar el cambio.','Con compromiso y apoyo es posible alcanzar un desempeño Alto en el siguiente periodo.','Se le anima a reconocer lo que puede mejorar y a asumirlo con decisión; sus docentes confían en que lo logrará.']},
+ bajo:{
+  a:['El comportamiento de {N} durante el periodo requiere atención prioritaria por su efecto en la convivencia del grupo.','Se evidencian dificultades de {N} para cumplir las normas de convivencia, que es necesario atender en conjunto con la familia.','{N} no ha logrado cumplir de manera suficiente los acuerdos de convivencia durante este periodo.','Es necesario que {N} asuma un compromiso real de cambio frente a su comportamiento escolar.'],
+  b:['Las conductas que interrumpen el trabajo en clase y afectan la relación con sus compañeros deben abordarse con acuerdos claros y seguimiento cercano.','Se requiere fortalecer el respeto por las normas, el autocontrol y la disposición para escuchar las orientaciones de docentes y directivos.','Esta valoración no define su valor como persona: es una oportunidad para trabajar las habilidades de convivencia que aún están en proceso.','Esta situación afecta su propio proceso de aprendizaje y el clima del grupo.'],
+  c:['Se solicita el acompañamiento decidido de la familia y un compromiso de convivencia con seguimiento del director de grupo.','Se recomienda orientación escolar y un plan de seguimiento acordado con el acudiente, conforme al manual de convivencia.','Sus docentes confían en su capacidad de mejorar: con apoyo y constancia puede transformar su desempeño en el próximo periodo.','Se establecerá una ruta de acompañamiento con metas pequeñas y revisión periódica de los avances.']}
+};}
+function nivelComport(n){return n>=4.6?'excelente':n>=4?'bueno':n>=3?'aceptable':'bajo';}
+function genObsComport(nombre,nota,det){
+  var n=parseFloat(String(nota).replace(',','.'))||0,P=obsPartes()[nivelComport(n)],N=nombreNat(nombre,'',true);
+  function pk(a){return a[Math.floor(Math.random()*a.length)];}
+  var d=(det||'').trim(),mid=pk(P.b);
+  if(d)mid+=' '+d.charAt(0).toUpperCase()+d.slice(1)+(/[.!?]$/.test(d)?'':'.');
+  return [pk(P.a),mid,pk(P.c)].join(' ').replace(/\{N\}/g,N);
+}
+function iaCfgComport(){var c=iaCfg();return {key:c.key,models:c.models,pila:$i('cpPila').checked,sys:IA_SYS_COMPORT,valores:IA_VALORES,focos:IA_FOCOS};}
+function addPrevCard(d,obs){
+  var wrap=document.getElementById('cprev'),div=document.createElement('div');
+  div.className='card';div.style.marginBottom='8px';
+  div.innerHTML='<div class="card-title" style="display:flex;align-items:center;justify-content:space-between"><span>'+d.nombre+' — Nota: '+d.nota+'</span>'+
+    '<button class="btn btn-ghost" style="width:auto;padding:4px 10px;margin:0" onclick="regenObsComport(this,\''+d.id+'\')">🔄 Regenerar</button></div>'+
+    '<textarea class="obs-ta" data-id="'+d.id+'" style="height:80px;resize:vertical"></textarea>';
+  div.querySelector('textarea').value=obs;wrap.appendChild(div);
+}
+function generarPreview(usarIA){
+  var wrap=document.getElementById('cprev'),existentes={},datos=[];
+  wrap.querySelectorAll('textarea.obs-ta').forEach(function(ta){existentes[ta.dataset.id]=true;});
+  document.querySelectorAll('#tcomport tr').forEach(function(row){
+    var inp=row.querySelector('input[data-id]:not([data-det])'),det=row.querySelector('input[data-det]');
+    if(inp&&inp.value.trim()!==''&&!existentes[inp.dataset.id])datos.push({id:inp.dataset.id,nombre:inp.dataset.nombre,nota:inp.value.trim(),det:det?det.value.trim():''});
+  });
+  if(!datos.length){
+    if(Object.keys(existentes).length){sm('mcomport','ℹ️ No hay estudiantes nuevos con nota — las observaciones ya generadas no se tocaron.','ok');return;}
+    sm('mcomport','⚠️ Escribe al menos una nota de comportamiento.','warn');return;
+  }
+  window.__cpUsaIA=!!usarIA;
+  function fin(n,f){document.getElementById('cprevwrap').style.display='block';sm('mcomport',n+' observación(es) nueva(s) generada(s)'+(f?' ('+f+' con plantilla por falta de respuesta de la IA)':'')+'. Las que ya tenías no se modificaron.','ok');}
+  if(!usarIA){datos.forEach(function(d){addPrevCard(d,genObsComport(d.nombre,d.nota,d.det));});fin(datos.length,0);return;}
+  var cfg=iaCfgComport();if(!cfg.key){sm('mcomport','⚠️ Falta la API key (pestaña PIAR).','err');return;}
+  var items=datos.map(function(d){return {k:d.id,pila:nombreNat(d.nombre,'',true),nota:d.nota,det:d.det};});
+  iaComportGen(cfg,items,function(m){sm('mcomport',m,'warn');}).then(function(out){
+    var f=0;datos.forEach(function(d){var t=out[d.id];if(!t){t=genObsComport(d.nombre,d.nota,d.det);f++;}addPrevCard(d,t);});fin(datos.length,f);
+  }).catch(function(e){sm('mcomport','❌ '+e.message,'err');});
+}
+function regenObsComport(btn,id){
+  var ta=btn.closest('.card').querySelector('textarea'),inp=document.querySelector('#tcomport input[data-id="'+id+'"]:not([data-det])'),det=document.querySelector('#tcomport input[data-det][data-id="'+id+'"]');
+  if(!inp)return;var nom=inp.dataset.nombre,nota=inp.value.trim(),d=det?det.value.trim():'';
+  if(!window.__cpUsaIA){ta.value=genObsComport(nom,nota,d);return;}
+  var cfg=iaCfgComport();btn.disabled=true;sm('mcomport','⏳ Regenerando…','warn');
+  iaComportGen(cfg,[{k:id,pila:nombreNat(nom,'',true),nota:nota,det:d||ta.value}],null).then(function(o){if(o[id])ta.value=o[id];sm('mcomport','✅ Regenerada.','ok');}).catch(function(e){sm('mcomport','❌ '+e.message,'err');}).then(function(){btn.disabled=false;});
+}
+function iaCopiarComport(modo){
+  var cfg=iaCfgComport();if(!cfg.key){sm('mcomport','⚠️ Falta la API key (pestaña PIAR).','err');return;}
+  var s='(function(){var cfg='+JSON.stringify(cfg)+';var nombreNat='+nombreNat.toString()+';var iaGemini='+iaGemini.toString()+';var iaComportGen='+iaComportGen.toString()+';var iaComportPage='+iaComportPage.toString()+';iaComportPage(cfg,'+JSON.stringify(modo)+');})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mcomport','✅ Script copiado ('+(modo==='todo'?'MEJORAR lo escrito':'COMPLETAR vacías')+'). Pégalo en la consola de la planilla de Comportamiento (F12) y Enter. Las notas deben estar escritas en la planilla.','ok');});
+}
+function cpPegarComport(){
+  navigator.clipboard.readText().then(function(t){document.getElementById('jcomport').value=t;cargarComport();}).catch(function(){sm('mcomport','⚠️ No pude leer el portapapeles. Pega el JSON a mano en el cuadro.','warn');});
+}
+
+function cpBorrarObsComport(){
+  var s='(function(){var c=0;function fire(el){el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));el.dispatchEvent(new Event("blur",{bubbles:true}));}document.querySelectorAll("textarea").forEach(function(el){if(/^obs\\d{4,10}$/.test(el.id)&&el.value!==""){el.value="";fire(el);c++;}});["o1","o2","o3","o4"].forEach(function(p){document.querySelectorAll("input").forEach(function(el){if(new RegExp("^"+p+"\\\\d{4,10}$").test(el.id)&&el.value!==""){el.value="";fire(el);c++;}});});alert("🗑️ Se borraron "+c+" observaciones. Las notas NO se tocaron.");})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mcomport','✅ Script BORRAR OBSERVACIONES copiado. Pégalo en consola de la planilla de Comportamiento (las notas se conservan).','ok');});
+}
+
+function cpFillComport(){
+  var datos=[];
+  document.querySelectorAll('#cprev textarea.obs-ta').forEach(function(ta){
+    var id=ta.dataset.id;
+    var inp=document.querySelector('#tcomport input[data-id="'+id+'"]');
+    var nota=inp?inp.value.trim():'';
+    if(ta.value.trim()!=='')datos.push({id:id,nota:nota,obs:ta.value.trim()});
+  });
+  if(!datos.length){sm('mcomport','⚠️ Genera primero la vista previa.','warn');return;}
+  var s='(function(){var D='+JSON.stringify(datos)+';var c=0,ne=[];function fire(el){el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));el.dispatchEvent(new Event("keyup",{bubbles:true}));el.dispatchEvent(new Event("blur",{bubbles:true}));}D.forEach(function(d){var n=document.getElementById("n"+d.id);if(n){n.value=d.nota;fire(n);}var big=document.getElementById("obs"+d.id);if(big){big.value=d.obs;fire(big);c++;}else{ne.push(d.id);}});var msg="✅ Comportamiento aplicado a "+c+" estudiantes.";if(ne.length)msg+="\\n⚠️ No se encontró el campo de observación para: "+ne.join(", ");alert(msg);})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mcomport','✅ Script APLICAR copiado. Pégalo en consola de la planilla de Comportamiento y guarda.','ok');});
+}
+
+// ══ PIAR ══
+function piarLogic(){
+  function val(n){var el=document.querySelector('[name="'+n+'"]');return el?el.value.trim():'';}
+  function isEmpty(n){return val(n)==='';}
+  function setVal(n,t){var el=document.querySelector('[name="'+n+'"]');if(!el)return false;el.value=t;['input','change','keyup','blur'].forEach(function(ev){el.dispatchEvent(new Event(ev,{bubbles:true}));});return true;}
+  function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+  function toTitle(s){return (s||'').toLowerCase().replace(/(^|\s)([a-záéíóúñ])/g,function(m,sp,c){return sp+c.toUpperCase();});}
+  function findNombre(){
+    var cand=null,bad=/PIAR|AJUSTE|BARRERA|EVALUAC|OBJETIVO|OTROS|PLAN|ESTUDIANTE|DISCAPACID|MEJORAMIENTO|PROFEBOLIVAR|COLEGIO|SEGUIMIENTO|INSTITUCI[OÓ]N|EDUCATIVA|SEDE|JORNADA|ANEXO|SEGUIMIENTO/;
+    document.querySelectorAll('input[type="text"]').forEach(function(el){
+      if(cand)return;
+      var t=(el.value||'').trim().replace(/\s+/g,' ');
+      if(t.length>=6&&t.length<=55&&t===t.toUpperCase()&&/^[A-ZÁÉÍÓÚÑ ]+$/.test(t)&&t.split(' ').length>=2&&t.split(' ').length<=6&&!bad.test(t))cand=t;
+    });
+    if(!cand)document.querySelectorAll('h1,h2,h3,h4,.card-title,div,span,td,th,strong,b').forEach(function(el){
+      if(cand)return;if(el.children.length)return;
+      var t=el.textContent.trim().replace(/\s+/g,' ');
+      if(t.length>=6&&t.length<=55&&t===t.toUpperCase()&&/^[A-ZÁÉÍÓÚÑ ]+$/.test(t)&&t.split(' ').length>=2&&t.split(' ').length<=6&&!bad.test(t))cand=t;
+    });
+    return cand;
+  }
+  function findArea(){
+    var nodes=document.querySelectorAll('label,div,span,strong,b,td,th');
+    for(var i=0;i<nodes.length;i++){
+      var t=nodes[i].textContent.trim();
+      if(/^Área\s*\/?\s*Asignatura\s*:?/i.test(t)||/^Área\s*:?$/i.test(t)){
+        var v='';
+        if(nodes[i].nextElementSibling)v=nodes[i].nextElementSibling.textContent.trim();
+        if(!v&&nodes[i].parentElement){var box=nodes[i].parentElement.querySelector('input,select');if(box)v=(box.value||'').trim();}
+        if(v&&v.length<60)return v;
+      }
+    }
+    return '';
+  }
+
+  var CATS=[
+   {test:/atenci|concentra|distrae|dispers/i,
+    b:['mantener la atención sostenida en actividades prolongadas o con varias instrucciones seguidas','sostener la concentración cuando la actividad se extiende en el tiempo','evitar distraerse durante tareas largas o con múltiples pasos'],
+    a:['fragmentar la actividad en pasos cortos, con apoyos visuales (íconos, esquemas, capturas de pantalla) y pausas activas periódicas','dividir el trabajo en momentos breves con metas claras, alternando con pausas cortas de autorregulación','usar organizadores gráficos que le permitan retomar la actividad fácilmente tras cada pausa'],
+    e:['se observa si completa cada segmento de la actividad con el apoyo visual dado y si disminuye el tiempo de reorientación requerido','se registra el nivel de autonomía alcanzado en cada tramo de la actividad y la necesidad de recordatorios','se hace seguimiento a la cantidad de pausas y apoyos requeridos para culminar la tarea']},
+   {test:/grupal|compañer|social|individual/i,
+    b:['relacionarse de forma espontánea con algunos compañeros, mostrando preferencia por el trabajo individual','integrarse de forma espontánea al trabajo en equipo','participar activamente en dinámicas grupales'],
+    a:['asignar un rol concreto dentro del trabajo en equipo, iniciando con actividades en pareja antes de grupos numerosos','favorecer primero el trabajo con un compañero de apoyo antes de avanzar a grupos más grandes','reforzar positivamente cada interacción y asignar responsabilidades claras dentro del grupo'],
+    e:['se valora su participación progresiva en actividades cooperativas guiadas, registrando el apoyo que aún requiere','se observa la frecuencia y calidad de su interacción con los compañeros a lo largo del periodo','se hace seguimiento a su disposición para integrarse a las dinámicas grupales propuestas']},
+   {test:/instruccion|transcrip|lectura extensa|texto largo|copiar/i,
+    b:['seguir instrucciones extensas o que implican transcripción y lectura prolongada','mantener el ritmo cuando las instrucciones son largas o requieren copiar mucho texto','comprender consignas extensas o con varios pasos escritos'],
+    a:['entregar instrucciones cortas y numeradas, con apoyo gráfico, reduciendo la transcripción y priorizando la comprensión sobre la copia literal','simplificar las consignas en pasos breves acompañados de imágenes o ejemplos','permitir el uso de esquemas o resúmenes en lugar de copiar textos completos'],
+    e:['se evalúa el seguimiento de instrucciones simplificadas y la comprensión verificada de forma oral o con esquemas','se observa la comprensión de la consigna más allá de la cantidad de texto producido','se hace seguimiento al apoyo requerido para completar tareas con instrucciones escritas']},
+   {test:/impulsiv|emocion|frustra|conflicto|cr[ií]tica/i,
+    b:['regular sus emociones ante situaciones de conflicto, frustración o crítica','recibir correcciones sin que ello afecte su disposición hacia la actividad','manejar momentos de frustración durante la clase'],
+    a:['brindar acompañamiento socioemocional, anticipar los cambios de actividad y dar retroalimentación en privado con lenguaje positivo','ofrecer la retroalimentación de forma individual y con tono constructivo, anticipando los cambios de actividad','establecer acuerdos previos y señales de autorregulación ante momentos de frustración'],
+    e:['se hace seguimiento a su capacidad de autorregulación y a la disminución de episodios de frustración','se observa su respuesta ante la retroalimentación y los cambios de actividad','se registra la frecuencia de episodios de frustración y los avances en su manejo']},
+   {test:/supervisi|autonom[ií]a|ritmo|secuenc/i,
+    b:['culminar sus actividades de forma autónoma sin supervisión frecuente','avanzar en las tareas sin acompañamiento constante','sostener el ritmo de trabajo hasta finalizar la actividad sin apoyo constante'],
+    a:['dividir la tarea en pasos secuenciales visibles (checklist), con acompañamiento intermitente y reconocimiento de los logros parciales','usar listas de chequeo con los pasos de la actividad para que pueda autoverificar su avance','realizar acompañamiento puntual en los momentos clave de la tarea, no de forma permanente'],
+    e:['se mide el nivel de independencia alcanzado en cada paso de la tarea, comparado con periodos anteriores','se observa la disminución progresiva del acompañamiento requerido para culminar la actividad','se registra el cumplimiento autónomo de los pasos de la lista de chequeo']},
+   {test:/escrib|transcrib|redact|caligraf|copiar del tablero/i,
+    b:['transcribir textos de forma ágil y ordenada, especialmente al copiar del tablero o de dictados','redactar respuestas escritas completas dentro del tiempo asignado','organizar sus ideas por escrito de manera clara'],
+    a:['permitir que exprese sus respuestas mediante dibujos, esquemas o explicaciones orales en lugar de textos extensos','reducir la cantidad de texto por transcribir, priorizando resúmenes o palabras clave','ofrecer plantillas o formatos con espacios guiados para completar en lugar de escribir desde cero'],
+    e:['se valora la comprensión demostrada a través de medios alternativos como dibujos o exposición oral, más que la extensión del texto producido','se revisa el avance en la claridad de las ideas expresadas, sin exigir un volumen fijo de escritura','se hace seguimiento a su desempeño con el apoyo de plantillas guiadas']},
+   {test:/dispositivo|celular|videojuego|pantalla|electr[oó]nic/i,
+    b:['mantenerse enfocado en la actividad de clase sin distraerse con funciones del dispositivo ajenas al tema (juegos, entretenimiento)','regular el tiempo de uso libre del dispositivo durante la actividad académica','usar el computador o dispositivo únicamente para los fines de la actividad propuesta'],
+    a:['canalizar su interés por la tecnología asignándole actividades interactivas directamente relacionadas con el tema de la clase','usar el computador como herramienta motivadora dentro de la actividad, evitando tiempos libres sin tarea asignada','establecer acuerdos claros sobre el uso del dispositivo antes de iniciar la actividad'],
+    e:['se observa si mantiene el uso del dispositivo enfocado en la actividad propuesta, sin distraerse en funciones ajenas a la clase','se registra la necesidad de recordatorios para volver a la tarea asignada','se hace seguimiento al cumplimiento de los acuerdos pactados sobre el uso del dispositivo']}
+  ];
+  var FORT=[
+   {test:/dibuj|arte|art[ií]stic|dise[ñn]o|gr[aá]fic/i,frase:'su habilidad artística y su gusto por el dibujo y el diseño'},
+   {test:/videojuego|gamifica|tecnolog[ií]a|aplicaci[oó]n interactiva/i,frase:'su interés por la tecnología y los entornos interactivos'},
+   {test:/geometr[ií]a|matem[aá]tic/i,frase:'su buen desempeño en geometría'},
+   {test:/m[uú]sica|teatro|deporte|educaci[oó]n f[ií]sica|experiment/i,frase:'su gusto por las actividades experienciales y prácticas'},
+   {test:/oral|debate|verbal|expresi[oó]n hablada/i,frase:'su facilidad para la expresión oral'}
+  ];
+  function detectarFortaleza(txt){var f=FORT.filter(function(x){return x.test.test(txt);});return f.length?pick(f).frase:'';}
+  var GEN={b:'acceder al aprendizaje del área en igualdad de condiciones, de acuerdo con su proceso individual',a:'implementar apoyos visuales, instrucciones claras y actividades prácticas ajustadas a su ritmo de aprendizaje',e:'se realiza seguimiento formativo y continuo de su progreso frente a los objetivos del área'};
+  var SUBJ=[
+   {test:/artefacto|p[aá]gina|internet|computador|procesador de texto|privacidad en l[ií]nea|inform[aá]tica|tecnolog[ií]a|aplicaci[oó]n/i,nombre:'Tecnología e Informática',extra:'el uso de apoyos visuales digitales (íconos, capturas de pantalla, tutoriales cortos en video)'},
+   {test:/n[uú]mero|operaci[oó]n|suma|resta|multiplicaci[oó]n|divisi[oó]n|geometr[ií]a|problema/i,nombre:'Matemáticas',extra:'el uso de material concreto, manipulativo y representaciones gráficas de los procedimientos'},
+   {test:/lectura|escritura|texto|narrativ|oral|comprensi[oó]n lectora/i,nombre:'Lenguaje',extra:'el uso de textos cortos, apoyos visuales y estrategias de comprensión lectora guiada'},
+   {test:/c[eé]lula|cuerpo humano|ecosistema|materia|energ[ií]a|naturaleza/i,nombre:'Ciencias Naturales',extra:'el uso de material concreto, experiencias prácticas y esquemas visuales de los conceptos'},
+   {test:/historia|geograf[ií]a|comunidad|cultura|sociedad/i,nombre:'Ciencias Sociales',extra:'el uso de líneas de tiempo, mapas y esquemas visuales para organizar la información'}
+  ];
+
+  function nombreNatural(s,txt){
+    var w=(s||'').trim().replace(/\s+/g,' ').split(' ');if(w.length<2)return s;
+    var P=/^(de|del|la|las|los|y|san|santa)$/i,u=[],b=[];
+    w.forEach(function(x){b.push(x);if(!P.test(x)){u.push(b.join(' '));b=[];}});if(b.length)u.push(b.join(' '));
+    var nA=u.length>=3?2:1,r=u.slice(nA).concat(u.slice(0,nA)).join(' ').toLowerCase().split(' ');
+    var AC={jose:'José',maria:'María',andres:'Andrés',sebastian:'Sebastián',jesus:'Jesús',angel:'Ángel',ivan:'Iván',adrian:'Adrián',julian:'Julián',nicolas:'Nicolás',hernan:'Hernán',ramon:'Ramón',fabian:'Fabián',joaquin:'Joaquín',lucia:'Lucía',rocio:'Rocío',sofia:'Sofía',perez:'Pérez',gomez:'Gómez',rodriguez:'Rodríguez',gonzalez:'González',lopez:'López',hernandez:'Hernández',sanchez:'Sánchez',ramirez:'Ramírez',diaz:'Díaz',jimenez:'Jiménez',martinez:'Martínez',garcia:'García',fernandez:'Fernández',bolivar:'Bolívar',mogollon:'Mogollón',mendez:'Méndez',velez:'Vélez',suarez:'Suárez',gutierrez:'Gutiérrez',alvarez:'Álvarez',benitez:'Benítez',ordonez:'Ordóñez',rios:'Ríos',paez:'Páez',munoz:'Muñoz',pena:'Peña',nino:'Niño',ibanez:'Ibáñez',castaneda:'Castañeda'};
+    var CL={a:'[aá]',e:'[eé]',i:'[ií]',o:'[oó]',u:'[uúü]',n:'[nñ]'},LT='A-Za-zÁÉÍÓÚáéíóúÑñ';
+    return r.map(function(x,i){
+      if(i>0&&/^(de|del|la|las|los|y)$/.test(x))return x;
+      var q=(txt||'').match(new RegExp('(?<!['+LT+'])'+x.replace(/[aeiounAEIOUN]/g,function(c){return CL[c.toLowerCase()];})+'(?!['+LT+'])','i'));
+      if(q&&q[0]!==q[0].toUpperCase())return q[0].charAt(0).toUpperCase()+q[0].slice(1);
+      return AC[x]||x.charAt(0).toUpperCase()+x.slice(1);
+    }).join(' ');
+  }
+  var txtDesc=['descripcion1','descripcion2'].map(function(n){var e=document.querySelector('[name="'+n+'"]');return e?e.value:'';}).join(' ');
+  var nombreDet=findNombre();
+  var Nombre=nombreDet?nombreNatural(nombreDet,txtDesc):null;
+  var sujeto=Nombre||'El estudiante';
+  var areaDet=findArea();
+  var objetivo=val('objetivo');
+  var perfilTxt=[val('otras_barreras'),val('otros_ajustes'),val('otras_evaluaciones')].join('. ');
+  var subj=SUBJ.filter(function(s){return s.test.test(objetivo)||s.test.test(areaDet);})[0]||{nombre:areaDet||'el área',extra:'el uso de apoyos visuales y actividades prácticas adaptadas a los contenidos'};
+  var perfilSent=perfilTxt.split(/[\.\n]/).map(function(s){return s.trim();}).filter(function(s){return s.length>15;});
+  var objSent=objetivo.split(/[\.\n]/).map(function(s){return s.trim();}).filter(function(s){return s.length>10;});
+  var objRef=objSent.length?pick(objSent):'';
+  var matches=CATS.map(function(c){
+    var evs=perfilSent.filter(function(s){return c.test.test(s);});
+    var idx=Math.floor(Math.random()*c.b.length);
+    return evs.length?{c:c,idx:idx}:null;
+  }).filter(Boolean);
+  // hasta 3 categorías distintas, en orden aleatorio
+  matches=matches.sort(function(){return Math.random()-0.5;}).slice(0,3);
+  var m1=matches.length?matches[0]:null;
+  var APER_B=['Desde el trabajo cotidiano en el aula se ha evidenciado que ','En el seguimiento realizado durante las clases se observa que ','A partir de la observación directa en el aula se identifica que ','El acompañamiento pedagógico brindado ha permitido evidenciar que '];
+  var APER_A=['Conforme al Diseño Universal para el Aprendizaje (DUA)','Siguiendo los lineamientos del Diseño Universal para el Aprendizaje (DUA)','Con base en el enfoque del Diseño Universal para el Aprendizaje (DUA)'];
+  var APER_E=['El seguimiento de estos ajustes se realiza de forma continua y diferenciada:','La valoración de estos apoyos se hace de manera progresiva y personalizada:','El docente hace seguimiento constante a la efectividad de estos ajustes:'];
+  var LEGAL_B=['conforme a los principios de accesibilidad y ajuste razonable del Decreto 1421 de 2017','en concordancia con el Decreto 1421 de 2017 y el enfoque de educación inclusiva','de acuerdo con lo dispuesto en el Decreto 1421 de 2017 sobre atención a la diversidad'];
+  function cap1(s){return s?s.charAt(0).toUpperCase()+s.slice(1):'';}
+  function objFrase(o){return o?'“'+o.replace(/\.+$/,'')+'”':'los propuestos para el área';}
+  var fortaleza=detectarFortaleza(val('descripcion1')+' '+val('descripcion2'));
+
+  var barrera,ajuste,evaluacion;
+  if(matches.length){
+    barrera=pick(APER_B)+sujeto+', en el área de '+subj.nombre+', presenta las siguientes barreras:\n'+
+      matches.map(function(m){return '• '+cap1(m.c.b[m.idx])+'.';}).join('\n')+
+      (objRef?'\nEsto incide particularmente en desempeños como '+objFrase(objRef)+'.':'')+
+      '\nEstas barreras deben tenerse en cuenta al planear y evaluar las actividades del área, '+pick(LEGAL_B)+'.';
+    ajuste=pick(APER_A)+', en el área de '+subj.nombre+' se implementan con '+sujeto+' los siguientes apoyos:\n'+
+      matches.map(function(m){return '• '+cap1(m.c.a[m.idx])+'.';}).join('\n')+
+      (fortaleza?'\n• Canalizar '+fortaleza+' como apoyo motivacional dentro de las actividades.':'')+
+      '\nSe recomienda además '+subj.extra+'.';
+    evaluacion=pick(APER_E)+'\n'+
+      matches.map(function(m){return '• '+cap1(m.c.e[m.idx])+'.';}).join('\n')+
+      '\nEstos avances se registran periodo a periodo frente a objetivos como '+objFrase(objRef)+', con el fin de retroalimentar el PIAR y ajustar los apoyos según el progreso de '+sujeto+'.';
+  }else{
+    barrera=sujeto+' requiere apoyos particulares en el área de '+subj.nombre+' para '+GEN.b+(objRef?', especialmente en desempeños como '+objFrase(objRef):'')+'. Esta situación debe considerarse al planear y evaluar sus actividades, '+pick(LEGAL_B)+'.';
+    ajuste=pick(APER_A)+', se recomienda '+GEN.a+' en el área de '+subj.nombre+(fortaleza?', canalizando '+fortaleza:'')+', incluyendo '+subj.extra+'.';
+    evaluacion=GEN.e+' en el área de '+subj.nombre+(objRef?', con atención a objetivos como '+objFrase(objRef):'')+', con seguimiento a los avances de '+sujeto+' periodo a periodo.';
+  }
+
+  var ROLES={
+   doce:{accion:[pick(['Realizar los ajustes curriculares necesarios para el avance académico y socioafectivo de '+sujeto+' en el área de '+subj.nombre+', e informar oportunamente a los acudientes sobre su proceso.','Adaptar los desempeños y estrategias de trabajo en clase a las necesidades de '+sujeto+', manteniendo comunicación constante con la familia y el equipo de apoyo.'])],
+    estra:[pick(['Realizar la adaptación y flexibilización de los núcleos temáticos, desempeños y proceso de evaluación de '+sujeto+' en '+subj.nombre+', y generar ajustes a las guías y talleres con apoyos gráficos y textos cortos que le permitan mantenerse concentrado.','Diseñar guías y talleres con apoyos visuales y textos cortos para '+sujeto+' en '+subj.nombre+', flexibilizando la evaluación conforme al DUA y al Decreto 1421 de 2017.'])]},
+   dire:{accion:[pick(['Garantizar la disposición de los recursos humanos, técnicos y de infraestructura necesarios para implementar los ajustes razonables de '+sujeto+', y liderar su seguimiento institucional.','Velar por que los ajustes razonables definidos para '+sujeto+' cuenten con los recursos institucionales necesarios y hacer seguimiento periódico a su implementación.'])],
+    estra:[pick(['Incluir los ajustes de '+sujeto+' en el Plan de Mejoramiento Institucional (PMI), sensibilizar a la comunidad educativa y verificar el cumplimiento de la ruta de atención a la diversidad.','Articular los apoyos de '+sujeto+' con el PMI y promover jornadas de sensibilización sobre inclusión con el equipo docente.'])]},
+   admi:{accion:[pick(['Apoyar la gestión y disposición oportuna de materiales, espacios y recursos requeridos para el desarrollo de las actividades adaptadas de '+sujeto+'.','Facilitar de manera oportuna los recursos administrativos que requiera el proceso de '+sujeto+'.'])],
+    estra:[pick(['Facilitar los canales de comunicación entre familia, docentes y directivos, y mantener actualizada la documentación del proceso (historia escolar, PIAR).','Mantener organizada y actualizada la historia escolar y el PIAR de '+sujeto+', y agilizar la comunicación entre los actores involucrados.'])]},
+   pare:{accion:[pick(['Acompañar y apoyar a '+sujeto+' en las actividades de aula y en los espacios de convivencia, promoviendo relaciones de respeto, empatía y colaboración.','Incluir activamente a '+sujeto+' en las dinámicas grupales y espacios de convivencia, fomentando el respeto y la colaboración entre pares.'])]}
+  };
+
+  var FORZAR=(typeof window!=='undefined'&&window.__PIAR_FORZAR__)?true:false;
+  var rellenados=[];
+  if((FORZAR||isEmpty('barrera'))&&setVal('barrera',barrera))rellenados.push('barrera');
+  if((FORZAR||isEmpty('ajuste'))&&setVal('ajuste',ajuste))rellenados.push('ajuste');
+  if((FORZAR||isEmpty('evaluacion'))&&setVal('evaluacion',evaluacion))rellenados.push('evaluacion');
+  Object.keys(ROLES).forEach(function(suf){
+    var r=ROLES[suf];
+    if(r.accion&&(FORZAR||isEmpty('accion_'+suf))&&setVal('accion_'+suf,r.accion[0]))rellenados.push('accion_'+suf);
+    if(r.estra&&(FORZAR||isEmpty('estra_'+suf))&&setVal('estra_'+suf,r.estra[0]))rellenados.push('estra_'+suf);
+  });
+  alert(rellenados.length?'✅ Se diligenciaron: '+rellenados.join(', ')+(Nombre?' (personalizado para '+Nombre+')':'')+'.\nRevisa el texto y guarda la planilla.':'ℹ️ No había campos vacíos para diligenciar en esta pantalla.');
+}
+
+function cpPiar(){
+  var s='('+piarLogic.toString()+')();';
+  navigator.clipboard.writeText(s).then(function(){sm('mpiar','✅ Script PIAR copiado. Pégalo en consola de la ficha del estudiante (Ajustes Razonables) y Enter.','ok');});
+}
+
+function cpPiarForzar(){
+  var s='(function(){window.__PIAR_FORZAR__=true;('+piarLogic.toString()+')();window.__PIAR_FORZAR__=false;})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mpiar','⚠️ Script PIAR (SOBRESCRIBIR) copiado. Esto reemplaza el texto actual de barrera/ajuste/evaluación aunque ya tengan contenido. Pégalo en consola y Enter.','ok');});
+}
+
+// ══ OTROS AJUSTES (perfil general PIAR, a partir de descripcion1/descripcion2) ══
+function otrosAjustesLogic(){
+  function val(n){var el=document.querySelector('[name="'+n+'"]');return el?el.value.trim():'';}
+  function isEmpty(n){return val(n)==='';}
+  function setVal(n,t){var el=document.querySelector('[name="'+n+'"]');if(!el)return false;el.value=t;['input','change','keyup','blur'].forEach(function(ev){el.dispatchEvent(new Event(ev,{bubbles:true}));});return true;}
+  function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+  function toTitle(s){return (s||'').toLowerCase().replace(/(^|\s)([a-záéíóúñ])/g,function(m,sp,c){return sp+c.toUpperCase();});}
+  function findNombre(){
+    var cand=null,bad=/PIAR|AJUSTE|BARRERA|EVALUAC|OBJETIVO|OTROS|PLAN|ESTUDIANTE|DISCAPACID|MEJORAMIENTO|PROFEBOLIVAR|COLEGIO|SEGUIMIENTO|INSTITUCI[OÓ]N|EDUCATIVA|SEDE|JORNADA|ANEXO|SEGUIMIENTO/;
+    document.querySelectorAll('input[type="text"]').forEach(function(el){
+      if(cand)return;
+      var t=(el.value||'').trim().replace(/\s+/g,' ');
+      if(t.length>=6&&t.length<=55&&t===t.toUpperCase()&&/^[A-ZÁÉÍÓÚÑ ]+$/.test(t)&&t.split(' ').length>=2&&t.split(' ').length<=6&&!bad.test(t))cand=t;
+    });
+    if(!cand)document.querySelectorAll('h1,h2,h3,h4,.card-title,div,span,td,th,strong,b').forEach(function(el){
+      if(cand)return;if(el.children.length)return;
+      var t=el.textContent.trim().replace(/\s+/g,' ');
+      if(t.length>=6&&t.length<=55&&t===t.toUpperCase()&&/^[A-ZÁÉÍÓÚÑ ]+$/.test(t)&&t.split(' ').length>=2&&t.split(' ').length<=6&&!bad.test(t))cand=t;
+    });
+    return cand;
+  }
+
+  var CATS=[
+   {test:/atenci|concentra|distrae|dispers/i,
+    b:['mantener la atención sostenida en actividades prolongadas o con varias instrucciones seguidas','sostener la concentración cuando la actividad se extiende en el tiempo','evitar distraerse durante tareas largas o con múltiples pasos'],
+    a:['fragmentar la actividad en pasos cortos, con apoyos visuales (íconos, esquemas, capturas de pantalla) y pausas activas periódicas','dividir el trabajo en momentos breves con metas claras, alternando con pausas cortas de autorregulación','usar organizadores gráficos que le permitan retomar la actividad fácilmente tras cada pausa'],
+    e:['se observa si completa cada segmento de la actividad con el apoyo visual dado y si disminuye el tiempo de reorientación requerido','se registra el nivel de autonomía alcanzado en cada tramo de la actividad y la necesidad de recordatorios','se hace seguimiento a la cantidad de pausas y apoyos requeridos para culminar la tarea']},
+   {test:/grupal|compañer|social|individual/i,
+    b:['relacionarse de forma espontánea con algunos compañeros, mostrando preferencia por el trabajo individual','integrarse de forma espontánea al trabajo en equipo','participar activamente en dinámicas grupales'],
+    a:['asignar un rol concreto dentro del trabajo en equipo, iniciando con actividades en pareja antes de grupos numerosos','favorecer primero el trabajo con un compañero de apoyo antes de avanzar a grupos más grandes','reforzar positivamente cada interacción y asignar responsabilidades claras dentro del grupo'],
+    e:['se valora su participación progresiva en actividades cooperativas guiadas, registrando el apoyo que aún requiere','se observa la frecuencia y calidad de su interacción con los compañeros a lo largo del periodo','se hace seguimiento a su disposición para integrarse a las dinámicas grupales propuestas']},
+   {test:/instruccion|transcrip|lectura extensa|texto largo|copiar/i,
+    b:['seguir instrucciones extensas o que implican transcripción y lectura prolongada','mantener el ritmo cuando las instrucciones son largas o requieren copiar mucho texto','comprender consignas extensas o con varios pasos escritos'],
+    a:['entregar instrucciones cortas y numeradas, con apoyo gráfico, reduciendo la transcripción y priorizando la comprensión sobre la copia literal','simplificar las consignas en pasos breves acompañados de imágenes o ejemplos','permitir el uso de esquemas o resúmenes en lugar de copiar textos completos'],
+    e:['se evalúa el seguimiento de instrucciones simplificadas y la comprensión verificada de forma oral o con esquemas','se observa la comprensión de la consigna más allá de la cantidad de texto producido','se hace seguimiento al apoyo requerido para completar tareas con instrucciones escritas']},
+   {test:/impulsiv|emocion|frustra|conflicto|cr[ií]tica/i,
+    b:['regular sus emociones ante situaciones de conflicto, frustración o crítica','recibir correcciones sin que ello afecte su disposición hacia la actividad','manejar momentos de frustración durante la clase'],
+    a:['brindar acompañamiento socioemocional, anticipar los cambios de actividad y dar retroalimentación en privado con lenguaje positivo','ofrecer la retroalimentación de forma individual y con tono constructivo, anticipando los cambios de actividad','establecer acuerdos previos y señales de autorregulación ante momentos de frustración'],
+    e:['se hace seguimiento a su capacidad de autorregulación y a la disminución de episodios de frustración','se observa su respuesta ante la retroalimentación y los cambios de actividad','se registra la frecuencia de episodios de frustración y los avances en su manejo']},
+   {test:/supervisi|autonom[ií]a|ritmo|secuenc/i,
+    b:['culminar sus actividades de forma autónoma sin supervisión frecuente','avanzar en las tareas sin acompañamiento constante','sostener el ritmo de trabajo hasta finalizar la actividad sin apoyo constante'],
+    a:['dividir la tarea en pasos secuenciales visibles (checklist), con acompañamiento intermitente y reconocimiento de los logros parciales','usar listas de chequeo con los pasos de la actividad para que pueda autoverificar su avance','realizar acompañamiento puntual en los momentos clave de la tarea, no de forma permanente'],
+    e:['se mide el nivel de independencia alcanzado en cada paso de la tarea, comparado con periodos anteriores','se observa la disminución progresiva del acompañamiento requerido para culminar la actividad','se registra el cumplimiento autónomo de los pasos de la lista de chequeo']},
+   {test:/escrib|transcrib|redact|caligraf|copiar del tablero/i,
+    b:['transcribir textos de forma ágil y ordenada, especialmente al copiar del tablero o de dictados','redactar respuestas escritas completas dentro del tiempo asignado','organizar sus ideas por escrito de manera clara'],
+    a:['permitir que exprese sus respuestas mediante dibujos, esquemas o explicaciones orales en lugar de textos extensos','reducir la cantidad de texto por transcribir, priorizando resúmenes o palabras clave','ofrecer plantillas o formatos con espacios guiados para completar en lugar de escribir desde cero'],
+    e:['se valora la comprensión demostrada a través de medios alternativos como dibujos o exposición oral, más que la extensión del texto producido','se revisa el avance en la claridad de las ideas expresadas, sin exigir un volumen fijo de escritura','se hace seguimiento a su desempeño con el apoyo de plantillas guiadas']},
+   {test:/dispositivo|celular|videojuego|pantalla|electr[oó]nic/i,
+    b:['mantenerse enfocado en la actividad sin distraerse con funciones del dispositivo ajenas al tema (juegos, entretenimiento)','regular el tiempo de uso libre del dispositivo durante la jornada escolar','usar el computador o dispositivo únicamente para los fines de la actividad propuesta'],
+    a:['canalizar su interés por la tecnología asignándole actividades interactivas con propósito pedagógico','usar el computador como herramienta motivadora, evitando tiempos libres sin tarea asignada','establecer acuerdos claros sobre el uso del dispositivo antes de cada actividad'],
+    e:['se observa si mantiene el uso del dispositivo enfocado en la actividad propuesta, sin distraerse en funciones ajenas','se registra la necesidad de recordatorios para volver a la tarea asignada','se hace seguimiento al cumplimiento de los acuerdos pactados sobre el uso del dispositivo']},
+   {test:/vulgar|vocabulario coloquial|lenguaje inadecuado|groser[ií]a|malas palabras/i,
+    b:['emplear un vocabulario respetuoso y adecuado en su interacción con compañeros y docentes','regular expresiones verbales inadecuadas en momentos de tensión o conflicto'],
+    a:['establecer acuerdos claros sobre el lenguaje esperado en el aula, con una señal discreta de recordatorio','reforzar positivamente el uso de un vocabulario respetuoso mediante retroalimentación inmediata y privada'],
+    e:['se registra la frecuencia de expresiones inadecuadas y su disminución progresiva a lo largo del periodo','se valora el uso de un lenguaje más respetuoso en las interacciones diarias con compañeros y docentes']}
+  ];
+  var GEN={b:'presenta necesidades particulares de apoyo para acceder al aprendizaje en igualdad de condiciones, de acuerdo con su proceso individual',a:'implementar apoyos visuales, instrucciones claras y actividades prácticas ajustadas a su ritmo de aprendizaje en todas las áreas',e:'se realiza seguimiento formativo y continuo de su progreso, de manera transversal en las áreas'};
+
+  function nombreNatural(s,txt){
+    var w=(s||'').trim().replace(/\s+/g,' ').split(' ');if(w.length<2)return s;
+    var P=/^(de|del|la|las|los|y|san|santa)$/i,u=[],b=[];
+    w.forEach(function(x){b.push(x);if(!P.test(x)){u.push(b.join(' '));b=[];}});if(b.length)u.push(b.join(' '));
+    var nA=u.length>=3?2:1,r=u.slice(nA).concat(u.slice(0,nA)).join(' ').toLowerCase().split(' ');
+    var AC={jose:'José',maria:'María',andres:'Andrés',sebastian:'Sebastián',jesus:'Jesús',angel:'Ángel',ivan:'Iván',adrian:'Adrián',julian:'Julián',nicolas:'Nicolás',hernan:'Hernán',ramon:'Ramón',fabian:'Fabián',joaquin:'Joaquín',lucia:'Lucía',rocio:'Rocío',sofia:'Sofía',perez:'Pérez',gomez:'Gómez',rodriguez:'Rodríguez',gonzalez:'González',lopez:'López',hernandez:'Hernández',sanchez:'Sánchez',ramirez:'Ramírez',diaz:'Díaz',jimenez:'Jiménez',martinez:'Martínez',garcia:'García',fernandez:'Fernández',bolivar:'Bolívar',mogollon:'Mogollón',mendez:'Méndez',velez:'Vélez',suarez:'Suárez',gutierrez:'Gutiérrez',alvarez:'Álvarez',benitez:'Benítez',ordonez:'Ordóñez',rios:'Ríos',paez:'Páez',munoz:'Muñoz',pena:'Peña',nino:'Niño',ibanez:'Ibáñez',castaneda:'Castañeda'};
+    var CL={a:'[aá]',e:'[eé]',i:'[ií]',o:'[oó]',u:'[uúü]',n:'[nñ]'},LT='A-Za-zÁÉÍÓÚáéíóúÑñ';
+    return r.map(function(x,i){
+      if(i>0&&/^(de|del|la|las|los|y)$/.test(x))return x;
+      var q=(txt||'').match(new RegExp('(?<!['+LT+'])'+x.replace(/[aeiounAEIOUN]/g,function(c){return CL[c.toLowerCase()];})+'(?!['+LT+'])','i'));
+      if(q&&q[0]!==q[0].toUpperCase())return q[0].charAt(0).toUpperCase()+q[0].slice(1);
+      return AC[x]||x.charAt(0).toUpperCase()+x.slice(1);
+    }).join(' ');
+  }
+  var txtDesc=['descripcion1','descripcion2'].map(function(n){var e=document.querySelector('[name="'+n+'"]');return e?e.value:'';}).join(' ');
+  var nombreDet=findNombre();
+  var Nombre=nombreDet?nombreNatural(nombreDet,txtDesc):null;
+  var sujeto=Nombre||'El estudiante';
+  var perfilTxt=[val('descripcion1'),val('descripcion2')].join('. ');
+  var perfilSent=perfilTxt.split(/[\.\n]/).map(function(s){return s.trim();}).filter(function(s){return s.length>10;});
+  var matches=CATS.map(function(c){
+    var evs=perfilSent.filter(function(s){return c.test.test(s);});
+    var idx=Math.floor(Math.random()*c.b.length);
+    return evs.length?{c:c,idx:idx,ev:evs[0]}:null;
+  }).filter(Boolean);
+  matches=matches.sort(function(){return Math.random()-0.5;}).slice(0,3);
+  var m1=matches.length?matches[0]:null;
+
+  var APER_B=['Desde el trabajo cotidiano en el aula se ha evidenciado que ','En el seguimiento realizado durante las clases se observa que ','A partir de la observación directa en el aula se identifica que ','El acompañamiento pedagógico brindado ha permitido evidenciar que '];
+  var APER_A=['Conforme al Diseño Universal para el Aprendizaje (DUA)','Siguiendo los lineamientos del Diseño Universal para el Aprendizaje (DUA)','Con base en el enfoque del Diseño Universal para el Aprendizaje (DUA)'];
+  var APER_E=['El seguimiento de estos ajustes se realiza de forma continua y diferenciada:','La valoración de estos apoyos se hace de manera progresiva y personalizada:','El docente hace seguimiento constante a la efectividad de estos ajustes:'];
+  var LEGAL_B=['conforme a los principios de accesibilidad y ajuste razonable del Decreto 1421 de 2017','en concordancia con el Decreto 1421 de 2017 y el enfoque de educación inclusiva','de acuerdo con lo dispuesto en el Decreto 1421 de 2017 sobre atención a la diversidad'];
+  function stripLead(s){return (s||'').replace(/^\s*(asimismo|también|además|igualmente|adicionalmente|por otro lado|por otra parte)\s*[,:]?\s*/i,'');}
+  function truncar(s,max){if(!s||s.length<=max)return s;var c=s.slice(0,max);var i=c.lastIndexOf(', ');return (i>max*0.4?c.slice(0,i):c).trim()+'…';}
+  function lower1(s){s=truncar(stripLead(s),170);return s?s.charAt(0).toLowerCase()+s.slice(1):'';}
+  function cap1(s){return s?s.charAt(0).toUpperCase()+s.slice(1):'';}
+
+  var barrera,ajuste,evaluacion;
+  if(matches.length){
+    barrera=pick(APER_B)+sujeto+' presenta las siguientes barreras:\n'+
+      matches.map(function(m){return '• '+cap1(m.c.b[m.idx])+'.';}).join('\n')+
+      (m1.ev?'\nEsto se refleja en que '+lower1(m1.ev)+'.':'')+
+      '\nEstas barreras deben tenerse en cuenta al planear y evaluar sus actividades en todas las áreas, '+pick(LEGAL_B)+'.';
+    ajuste=pick(APER_A)+', se implementan de manera transversal con '+sujeto+' los siguientes apoyos:\n'+
+      matches.map(function(m){return '• '+cap1(m.c.a[m.idx])+'.';}).join('\n');
+    evaluacion=pick(APER_E)+'\n'+
+      matches.map(function(m){return '• '+cap1(m.c.e[m.idx])+'.';}).join('\n')+
+      '\nEstos avances se documentan periodo a periodo, con seguimiento transversal en todas las áreas, para retroalimentar el PIAR de '+sujeto+'.';
+  }else{
+    barrera=sujeto+' '+GEN.b+'. Esta situación debe considerarse al planear y evaluar sus actividades en todas las áreas, '+pick(LEGAL_B)+'.';
+    ajuste=pick(APER_A)+', se recomienda '+GEN.a+'.';
+    evaluacion=GEN.e+', con seguimiento a los avances de '+sujeto+' periodo a periodo.';
+  }
+
+  var FORZAR=(typeof window!=='undefined'&&window.__OTROS_FORZAR__)?true:false;
+  var rellenados=[];
+  if((FORZAR||isEmpty('otras_barreras'))&&setVal('otras_barreras',barrera))rellenados.push('otras_barreras');
+  if((FORZAR||isEmpty('otros_ajustes'))&&setVal('otros_ajustes',ajuste))rellenados.push('otros_ajustes');
+  if((FORZAR||isEmpty('otras_evaluaciones'))&&setVal('otras_evaluaciones',evaluacion))rellenados.push('otras_evaluaciones');
+  if(rellenados.length){
+    alert('✅ Se diligenciaron: '+rellenados.join(', ')+(Nombre?' (personalizado para '+Nombre+')':'')+'.\nRevisa el texto y guarda la planilla.\n⚠️ Este texto general sirve de base para generar barrera/ajuste/evaluación por asignatura, revísalo antes de usar el script PIAR en cada área.');
+  }else if(!perfilTxt.trim()){
+    alert('⚠️ No se encontró texto en descripcion1/descripcion2 para generar el contenido. Diligencia esos campos primero y vuelve a intentarlo.');
+  }else{
+    alert('ℹ️ No había campos vacíos para diligenciar en esta pantalla (usa la versión SOBRESCRIBIR si quieres regenerarlos).');
+  }
+}
+
+function cpOtrosAjustes(){
+  var s='('+otrosAjustesLogic.toString()+')();';
+  navigator.clipboard.writeText(s).then(function(){sm('mpiar','✅ Script Otros Ajustes copiado. Pégalo en consola de la ficha del estudiante (sección Otros Ajustes) y Enter.','ok');});
+}
+
+function cpOtrosAjustesForzar(){
+  var s='(function(){window.__OTROS_FORZAR__=true;('+otrosAjustesLogic.toString()+')();window.__OTROS_FORZAR__=false;})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mpiar','⚠️ Script Otros Ajustes (SOBRESCRIBIR) copiado. Reemplaza el texto actual aunque ya tenga contenido. Pégalo en consola y Enter.','ok');});
+}
+
+// ══ PIAR + OTROS AJUSTES EN UN SOLO PASO ══
+// Primero diligencia (si están vacíos) los 3 campos generales de "Otros Ajustes"
+// (Convivencia/Socialización/Participación/Autonomía/Autocontrol, con base en
+// descripcion1/descripcion2), y luego, ya con ese contexto disponible, diligencia
+// barrera/ajuste/evaluacion de la asignatura y el Plan de Mejoramiento (accion_/estra_).
+// No sobrescribe nada que ya tenga contenido salvo que se use la versión FORZAR.
+function piarTodoLogic(){
+  try{ (otrosAjustesLogic)(); }catch(e){ console.warn('Otros Ajustes:',e); }
+  try{ (piarLogic)(); }catch(e){ console.warn('PIAR asignatura:',e); }
+}
+function cpPiarTodo(){
+  var s='(function(){var otrosAjustesLogic='+otrosAjustesLogic.toString()+';var piarLogic='+piarLogic.toString()+';('+piarTodoLogic.toString()+')();})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mpiar','✅ Script PIAR COMPLETO copiado (Otros Ajustes + Asignatura). Pégalo en consola de la ficha del estudiante (Ajustes Razonables) y Enter.','ok');});
+}
+function cpPiarTodoForzar(){
+  var s='(function(){window.__OTROS_FORZAR__=true;window.__PIAR_FORZAR__=true;var otrosAjustesLogic='+otrosAjustesLogic.toString()+';var piarLogic='+piarLogic.toString()+';('+piarTodoLogic.toString()+')();window.__OTROS_FORZAR__=false;window.__PIAR_FORZAR__=false;})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mpiar','⚠️ Script PIAR COMPLETO (SOBRESCRIBIR) copiado. Reemplaza todo el contenido existente (Otros Ajustes + Asignatura). Pégalo en consola y Enter.','ok');});
+}
+
+// Init
+updChk(1);calcP();
+
+var IA_KB=[
+ {t:/tdah|d[eé]ficit de atenci|hiperactiv/i,n:'TDAH: dificultad de atención sostenida, función ejecutiva (iniciar, planificar, inhibir) y autorregulación. Funciona: tareas cortas y secuenciadas, un solo paso de instrucción a la vez, ubicación sin distractores, movimiento autorizado con propósito (repartir material), retroalimentación inmediata, agenda visual, evaluaciones fraccionadas con tiempo extra. Evitar: castigar el movimiento, copias largas, quitar recreo como sanción.'},
+ {t:/autis|tea\b|asperger|espectro/i,n:'TEA: comunicación social, intereses restringidos, sensibilidad sensorial, necesidad de anticipación. Funciona: agenda visual, anticipar cambios, lenguaje literal y directo, pictogramas, roles claros en trabajo grupal, rincón de calma, usar su interés especial como puente al tema, formatos de evaluación predecibles. Evitar: ironía, cambios sin aviso, exigir contacto visual, exceso de ruido.'},
+ {t:/intelectual|cognitiv|retardo|down|trisom/i,n:'Discapacidad intelectual/Down: ritmo de aprendizaje y nivel de abstracción. Funciona: priorizar aprendizajes esenciales (flexibilización curricular), material concreto, repetición espaciada, tareas funcionales, andamiaje que se retira de forma gradual, lenguaje simple con apoyo visual, evaluación por desempeño observable. Evitar: infantilizar, bajar expectativas sin criterio.'},
+ {t:/dislexi|lectura|lector/i,n:'Dislexia/trastorno específico de lectura: decodificación, fluidez y ortografía. Funciona: lectura en voz alta por el docente o audio, tiempo adicional, texto con tipografía clara y buen espaciado, evaluación oral, no penalizar ortografía fuera de Lenguaje, no hacerle leer en voz alta frente al grupo sin acuerdo previo.'},
+ {t:/disgraf|escritura/i,n:'Disgrafía: trazo y producción escrita. Funciona: reducir copia, plantillas con espacios guiados, teclado, respuestas orales o gráficas, evaluar contenido y no caligrafía.'},
+ {t:/discalcul|c[aá]lculo/i,n:'Discalculia: sentido numérico y cálculo. Funciona: material concreto, tablas de apoyo, calculadora en procesos que no son el objeto evaluado, problemas con contexto cercano, pasos escritos del procedimiento.'},
+ {t:/visual|baja visi|ceguera|ciego/i,n:'Discapacidad visual: macrotipo, contraste, ubicación cercana a la fuente de luz y al tablero, descripción verbal de lo que se escribe o muestra, material táctil, Braille o lector de pantalla, tiempo extra. Evitar "esto/ahí/aquí" sin descripción.'},
+ {t:/auditiv|hipoacusi|sord|implante coclear/i,n:'Discapacidad auditiva: ubicación frente al docente, hablar de frente y sin cubrirse la boca, apoyo visual y escrito, intérprete/modelo lingüístico de LSC si es usuario de lengua de señas, subtítulos en videos. Si es usuario de LSC, el castellano escrito es segunda lengua: ajustar su evaluación.'},
+ {t:/f[ií]sic|motor|parális|paralisis|cerebral|espina|distrofia/i,n:'Discapacidad física/motora: accesibilidad del espacio, tiempos de desplazamiento y fatiga, adaptadores de escritura o teclado, evaluación oral o con más tiempo, adaptación de Educación Física.'},
+ {t:/lenguaje|habla|tel\b|disfasia|tartamud|mutismo/i,n:'Trastorno de lenguaje/habla: dar tiempo para responder, empezar con preguntas cerradas, apoyo visual, no completar sus frases, evaluación oral con apoyos y sin presión de tiempo.'},
+ {t:/ansiedad|depres|oposicion|desafiante|conducta|emocional|psicosocial|tod\b/i,n:'Condición psicosocial/emocional o de conducta: previsibilidad, retroalimentación en privado, acuerdos claros y salida de regulación pactada, adulto de referencia, refuerzo de lo logrado, articulación con orientación escolar y salud. Evitar la exposición pública del error.'},
+ {t:/alta capacidad|talento|superdot/i,n:'Altas capacidades/talento: enriquecimiento y profundización (no más tarea del mismo nivel), proyectos de interés, riesgo de aburrimiento y desfase socioemocional.'},
+ {t:/epilep|convulsi/i,n:'Epilepsia: protocolo de crisis acordado con familia y salud, fatiga y efectos de medicación sobre atención, no restringir la participación sin criterio médico.'}
+];
+
+// ══ PIAR CON IA v8 — Gemini, ejecutado desde la consola de la ficha ══
+var IA_AREAS=[
+ {t:'matem|aritm|geometr|estad|suma|resta|multiplic|divisi[oó]n|decimal|fracci|n[uú]mero|ecuaci|problema',n:'Matemáticas: material concreto y representaciones gráficas, procedimientos secuenciados con ejemplo resuelto y lista de verificación, problemas con contexto cercano, calculadora o tablas en procesos que no son el objeto evaluado, evaluar el razonamiento y no solo el resultado.'},
+ {t:'lengua|lenguaje|castellan|lectura|escritura|comprensi[oó]n|texto|espa[nñ]ol',n:'Lenguaje: textos graduados, lectura acompañada o en audio, organizadores gráficos para comprender y producir, preguntas guía, respuestas orales o con imágenes, evaluar comprensión y no solo ortografía.'},
+ {t:'tecnolog|inform[aá]tica|computador|internet|artefacto|software|digital',n:'Tecnología e Informática: tutoriales cortos o capturas paso a paso, demostración en vivo, práctica guiada en el computador, roles en proyectos, evaluación por producto o demostración del procedimiento.'},
+ {t:'f[ií]sic|deporte|recreaci',n:'Educación Física: instrucciones demostradas, roles adaptados, reglas claras y anticipadas, variantes de la actividad, pausas, evaluación del proceso y la participación.'},
+ {t:'natural|biolog|qu[ií]mic',n:'Ciencias Naturales: experiencias prácticas, esquemas y mapas conceptuales, vocabulario con imágenes, experimentos guiados, evaluación oral o con dibujo rotulado.'},
+ {t:'social|historia|geograf|c[ií]vic|democracia',n:'Ciencias Sociales: líneas de tiempo, mapas, organizadores gráficos, casos cercanos al contexto, lectura apoyada, evaluación oral o por producto.'},
+ {t:'ingl|idioma',n:'Inglés: vocabulario con imágenes y gestos, frases modelo, repetición espaciada, evaluación oral o con apoyo visual, menor carga de escritura.'},
+ {t:'art[ií]stic|m[uú]sica|dibujo|pl[aá]stica',n:'Artística: proyectos con opciones de técnica, instrucciones por pasos con modelo, evaluación del proceso y la intención, ritmo propio.'},
+ {t:'[eé]tica|religi|valores|convivencia',n:'Ética/Religión/Convivencia: situaciones cercanas, role-play breve, acuerdos visibles, retroalimentación privada, evaluar participación y reflexión.'}
+];
+var IA_SYS=[
+'Eres un docente de apoyo/orientador colombiano con 15 años de experiencia redactando PIAR (Decreto 1421 de 2017, Anexo 2 del MEN). Escribes como quien conoce al niño y lo ha visto trabajar, no como un formato.',
+'MARCO MEN (síguelo): las barreras NO las presenta el estudiante; están en el entorno, las actividades, los materiales, la comunicación, la evaluación o las actitudes. Redáctalas así ("las guías con bloques largos de texto limitan su acceso al objetivo X"), nunca "el estudiante no puede/presenta dificultad para". Los ajustes razonables deben ser concretos, aplicables mañana en el aula, ligados a una barrera y al objetivo de la asignatura (curriculares, metodológicos, de materiales, de evaluación, de entorno). La evaluación de los ajustes dice qué evidencia observable mostrará si el ajuste funciona, cada cuánto se revisa y qué se cambia si no funciona, coherente con el SIEE. El diagnóstico no define al estudiante ni dicta los ajustes: manda lo observado en clase.',
+'FUENTES: la "descripcion" y lo "ya_escrito_en_la_ficha" son las observaciones reales del docente; "version_actual_a_mejorar" es un borrador previo: conserva sus hechos y mejora la redacción. Usa SOLO esos hechos. No inventes anécdotas, cifras, terapias, medicamentos ni datos clínicos; si el diagnóstico no aparece explícito, no lo supongas. Si falta información, redacta con cautela ("se ha observado", "se prueba") sin fabricar. Incluye al menos 2 detalles propios de este caso (intereses, lo que ya funcionó, el objetivo concreto). Los ajustes y acciones deben cambiar según la asignatura.',
+'PLAN DE MEJORAMIENTO: las acciones de docentes, directivos, administrativos y pares deben derivarse de los ajustes concretos que redactaste (si el ajuste necesita material impreso o tecnología, la acción administrativa o directiva habla de gestionarlo; si requiere trabajo cooperativo, la de pares define roles), no frases genéricas de sensibilización.',
+'PESO PROFESIONAL Y LEGAL: el texto debe sonar a un profesional que domina la normativa, el diagnóstico y el PIAR. En cada campo de la asignatura ancla la redacción en el marco legal con UNA frase natural y distinta cada vez (por ejemplo: la garantía de ajustes razonables del Decreto 1421 de 2017, compilado en el Decreto 1075 de 2015; el enfoque de educación inclusiva y no discriminación de la Ley 1618 de 2013; los principios del Diseño Universal para el Aprendizaje: múltiples formas de representación, de acción y expresión, y de implicación; la evaluación flexibilizada conforme al SIEE). Usa terminología técnica precisa (barreras para el aprendizaje y la participación, apoyos, flexibilización curricular y evaluativa, valoración pedagógica, corresponsabilidad familia-escuela). Cuando la ficha mencione un diagnóstico o condición, muestra que lo conoces refiriéndote a sus implicaciones educativas concretas (no a síntomas inventados). NO cites números de artículo ni inventes normas o sentencias; si no estás seguro de una referencia, no la uses.',
+'NOMBRE Y GÉNERO: {{NOMBRE}} es el nombre del estudiante; úsalo máximo una vez por campo y después "el estudiante" o el pronombre. Deduce el género del texto; si no se puede, usa "el estudiante" sin marcar género.',
+'ESTILO: voz de docente, sobria, español de Colombia, sin tono de IA. PROHIBIDO: "es fundamental", "cabe destacar", "en aras de", "fomentar un ambiente inclusivo", "de manera integral", abrir todos los campos con la misma fórmula, repetir la misma barrera con otras palabras, listas genéricas que servirían para cualquier niño. Respeta el ESTILO DE ESTA VEZ y no uses los arranques de la lista EVITAR; cada campo abre distinto a los demás.',
+'SALIDA: SOLO un objeto JSON válido, sin markdown ni texto extra, con exactamente las claves de CLAVES_A_REDACTAR; cada valor es texto plano (puede usar saltos de línea y "• ").'
+].join('\n\n');
+var IA_KEYDESC={
+ barrera:'barreras del entorno/actividad en ESTA asignatura frente al objetivo (70-130 palabras)',
+ ajuste:'ajustes razonables concretos de esta asignatura, ligados a las barreras (70-130 palabras)',
+ evaluacion:'cómo se verificará si los ajustes funcionan: evidencia observable, frecuencia y qué se cambia si no funcionan (60-110 palabras)',
+ otras_barreras:'perfil TRANSVERSAL (convivencia, socialización, participación, autonomía, autocontrol): barreras del entorno (60-110 palabras)',
+ otros_ajustes:'ajustes transversales concretos para ese perfil (60-110 palabras)',
+ otras_evaluaciones:'seguimiento transversal de esos ajustes con evidencias observables (60-110 palabras)',
+ accion_doce:'acción del docente (1-2 frases)',estra_doce:'estrategia del docente (1-2 frases)',
+ accion_dire:'acción de los directivos (1-2 frases)',estra_dire:'estrategia de los directivos (1-2 frases)',
+ accion_admi:'acción del personal administrativo (1-2 frases)',estra_admi:'estrategia del personal administrativo (1-2 frases)',
+ accion_pare:'acción de los compañeros/pares (1-2 frases)'
+};
+var IA_ESTR=['un párrafo corrido por campo, sin viñetas','viñetas cortas con una frase de enlace al inicio','una frase de contexto y luego 2-3 viñetas','párrafos breves que arrancan con una situación real de aula'];
+var IA_LONG=['más breve y directo','extensión media','algo más desarrollado, con un ejemplo de aula'];
+var IA_APER=['una situación observada en clase','el objetivo del área','lo que ya le ha funcionado','un interés o fortaleza del estudiante','la actividad que más lo bloquea'];
+var IA_KEY_FIJA='AQ.Ab8RN6JEJ9NsQSxO398cPgKFb6pP2_-Mm1nLYv0asCmMiPnR5A'; // ← key integrada. Si algún día la cambias, reemplaza SOLO el texto entre comillas.
+var IA_MODELOS_DEF='gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.8-flash';
+
+// Núcleo: arma el prompt, llama a Gemini (con reintentos y modelos de respaldo) y devuelve {clave:texto}.
+async function iaCore(cfg,ctx){
+  var words=(ctx.nombre||'').split(/\s+/).filter(function(w){return w.length>2;});
+  function A(t){if(!t)return '';var s=String(t);if(cfg.anon)words.forEach(function(w){s=s.replace(new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),'{{NOMBRE}}');});return s.replace(/(\{\{NOMBRE\}\}[\s,]*){2,}/g,'{{NOMBRE}} ');}
+  function AO(o){var r={};Object.keys(o||{}).forEach(function(k){r[k]=A(o[k]);});return r;}
+  function pick(a){return a[Math.floor(Math.random()*a.length)];}
+  var txt0=[ctx.objetivo,ctx.descripcion,ctx.dx].join(' ');
+  var kb=(cfg.kb||[]).filter(function(k){return new RegExp(k.t,'i').test(txt0);}).map(function(k){return k.n;}).join('\n');
+  var ar=(cfg.areas||[]).filter(function(k){return new RegExp(k.t,'i').test((ctx.area||'')+' '+(ctx.objetivo||''));}).map(function(k){return k.n;}).join('\n');
+  var datos={estudiante:'{{NOMBRE}}',area_asignatura:ctx.area||'(no detectada)',objetivo_periodo:A(ctx.objetivo),descripcion:A(ctx.descripcion),diagnostico_en_la_ficha:A(ctx.dx)||'(no aparece en un campo propio)',ya_escrito_en_la_ficha:AO(ctx.ya),version_actual_a_mejorar:AO(ctx.act),otros_datos_de_la_ficha:AO(ctx.extras),
+    referencia_diagnostico:kb||'(sin ficha específica: razona a partir de lo observado)',referencia_area:ar||'(sin ficha de área)'};
+  var claves=ctx.keys.map(function(k){return '- '+k+': '+(cfg.keydesc[k]||'texto');}).join('\n');
+  var user='DATOS DEL CASO:\n'+JSON.stringify(datos,null,1)+'\n\nCLAVES_A_REDACTAR:\n'+claves+'\n\nESTILO DE ESTA VEZ: estructura = '+pick(cfg.estr)+'; extensión = '+pick(cfg.long)+'; la barrera abre partiendo de '+pick(cfg.aper)+'.\n\nEVITAR estos arranques recientes:\n'+((ctx.hist||[]).join('\n')||'(ninguno)')+'\n\nResponde solo con el JSON.';
+  var body={system_instruction:{parts:[{text:cfg.sys}]},contents:[{role:'user',parts:[{text:user}]}],generationConfig:{maxOutputTokens:6000,temperature:0.9,thinkingConfig:{thinkingLevel:'low'}}};
+  var wait=function(ms){return new Promise(function(r){setTimeout(r,ms);});};
+  var last='';
+  for(var mi=0;mi<cfg.models.length;mi++){
+    var m=cfg.models[mi],sinThink=false;
+    if(mi>0&&cfg.status)cfg.status('↪ Probando con otro modelo: '+m+' (falló: '+last+')');
+    for(var it=1;it<=4;it++){
+      var ctl=new AbortController(),to=setTimeout(function(){ctl.abort();},45000);
+      try{
+        var b=JSON.parse(JSON.stringify(body));if(sinThink)delete b.generationConfig.thinkingConfig;
+        var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+m+':generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':cfg.key},body:JSON.stringify(b),signal:ctl.signal});
+        clearTimeout(to);
+        if(r.status===429){last='429 límite de peticiones por minuto';if(it<4){if(cfg.status)cfg.status('⏳ Límite por minuto en '+m+'; espero 10 s (intento '+it+' de 4)…');await wait(10000);continue;}break;}
+        if(r.status===503){last='503 Google saturado';if(it<4){if(cfg.status)cfg.status('⏳ Google saturado ('+m+'), reintento '+it+' de 3…');await wait(2500*it);continue;}break;}
+        if(r.status===404){last='404 modelo no disponible: '+m;break;}
+        if(r.status===400&&!sinThink){sinThink=true;it--;continue;}
+        if(r.status===400||r.status===401||r.status===403){var dt=await r.text().catch(function(){return '';});var fe=new Error('Error '+r.status+' — revisa la API key: '+dt.slice(0,200));fe.fatal=true;throw fe;}
+        if(!r.ok){last='error '+r.status;break;}
+        var d=await r.json(),c=(d.candidates||[])[0],t='';
+        ((c&&c.content&&c.content.parts)||[]).forEach(function(p){if(typeof p.text==='string'&&!p.thought)t+=p.text;});
+        var i0=t.indexOf('{'),i1=t.lastIndexOf('}'),o=null;
+        if(i0>=0&&i1>i0){try{o=JSON.parse(t.slice(i0,i1+1));}catch(x){}}
+        if(!o){last='respuesta sin JSON utilizable';if(it<4)continue;break;}
+        var out={};ctx.keys.forEach(function(k){var v=o[k];if(Array.isArray(v))v=v.join('\n');if(typeof v==='string'&&v.trim())out[k]=v.trim().replace(/\{\{NOMBRE\}\}/g,ctx.nombreTitulo||'el estudiante');});
+        return out;
+      }catch(e){
+        clearTimeout(to);
+        if(e.fatal)throw e;
+        if(e.name==='TypeError'){var ne=new Error('RED: '+e.message);ne.red=true;throw ne;}
+        last=e.name==='AbortError'?'tiempo agotado':e.message;
+        if(it<4)continue;break;
+      }
+    }
+  }
+  throw new Error('Ningún modelo respondió ('+last+')');
+}
+
+// Se ejecuta en la consola de la ficha PIAR: lee, genera y rellena.
+function iaPage(cfg,modo){
+  function nombreNatural(s,txt){
+    var w=(s||'').trim().replace(/\s+/g,' ').split(' ');if(w.length<2)return s;
+    var P=/^(de|del|la|las|los|y|san|santa)$/i,u=[],b=[];
+    w.forEach(function(x){b.push(x);if(!P.test(x)){u.push(b.join(' '));b=[];}});if(b.length)u.push(b.join(' '));
+    var nA=u.length>=3?2:1,r=u.slice(nA).concat(u.slice(0,nA)).join(' ').toLowerCase().split(' ');
+    var AC={jose:'José',maria:'María',andres:'Andrés',sebastian:'Sebastián',jesus:'Jesús',angel:'Ángel',ivan:'Iván',adrian:'Adrián',julian:'Julián',nicolas:'Nicolás',hernan:'Hernán',ramon:'Ramón',fabian:'Fabián',joaquin:'Joaquín',lucia:'Lucía',rocio:'Rocío',sofia:'Sofía',perez:'Pérez',gomez:'Gómez',rodriguez:'Rodríguez',gonzalez:'González',lopez:'López',hernandez:'Hernández',sanchez:'Sánchez',ramirez:'Ramírez',diaz:'Díaz',jimenez:'Jiménez',martinez:'Martínez',garcia:'García',fernandez:'Fernández',bolivar:'Bolívar',mogollon:'Mogollón',mendez:'Méndez',velez:'Vélez',suarez:'Suárez',gutierrez:'Gutiérrez',alvarez:'Álvarez',benitez:'Benítez',ordonez:'Ordóñez',rios:'Ríos',paez:'Páez',munoz:'Muñoz',pena:'Peña',nino:'Niño',ibanez:'Ibáñez',castaneda:'Castañeda'};
+    var CL={a:'[aá]',e:'[eé]',i:'[ií]',o:'[oó]',u:'[uúü]',n:'[nñ]'},LT='A-Za-zÁÉÍÓÚáéíóúÑñ';
+    return r.map(function(x,i){
+      if(i>0&&/^(de|del|la|las|los|y)$/.test(x))return x;
+      var q=(txt||'').match(new RegExp('(?<!['+LT+'])'+x.replace(/[aeiounAEIOUN]/g,function(c){return CL[c.toLowerCase()];})+'(?!['+LT+'])','i'));
+      if(q&&q[0]!==q[0].toUpperCase())return q[0].charAt(0).toUpperCase()+q[0].slice(1);
+      return AC[x]||x.charAt(0).toUpperCase()+x.slice(1);
+    }).join(' ');
+  }
+  function V(n){var e=document.querySelector('[name="'+n+'"]');return e?(e.value||'').trim():null;}
+  var K1=['barrera','ajuste','evaluacion'],K2=['otras_barreras','otros_ajustes','otras_evaluaciones'],K3=['accion_doce','estra_doce','accion_dire','estra_dire','accion_admi','estra_admi','accion_pare'];
+  var ALL=K1.concat(K2,K3).filter(function(k){return V(k)!==null;});
+  var keys=ALL.filter(function(k){return (cfg.otros||K2.indexOf(k)<0)&&(modo==='todo'||V(k)==='');});
+  var tb=document.getElementById('__pbToast')||document.body.appendChild(document.createElement('div'));
+  tb.id='__pbToast';tb.style.cssText='position:fixed;top:10px;right:10px;z-index:99999;background:#2d3a8c;color:#fff;padding:10px 14px;border-radius:8px;font:13px sans-serif;max-width:320px;box-shadow:0 2px 8px #0005';
+  function T(t){tb.textContent=t;}
+  if(!keys.length){T('ℹ️ Nada que completar');alert(ALL.length?'ℹ️ No hay campos vacíos en esta pantalla. Usa "MEJORAR TODO" si quieres regenerar.':'⚠️ No encontré los campos del PIAR (barrera, ajuste, evaluacion…). ¿Estás en la ficha de Ajustes Razonables?');return;}
+  var bad=/PIAR|AJUSTE|BARRERA|EVALUAC|OBJETIVO|OTROS|PLAN|ESTUDIANTE|DISCAPACID|MEJORAMIENTO|COLEGIO|SEGUIMIENTO|INSTITUCI|EDUCATIVA|SEDE|JORNADA|ANEXO/,nom='';
+  document.querySelectorAll('input[type="text"]').forEach(function(el){var t=(el.value||'').trim().replace(/\s+/g,' ');if(!nom&&t.length>=6&&t.length<=55&&/^[A-ZÁÉÍÓÚÑ ]+$/.test(t)&&t.split(' ').length>=2&&t.split(' ').length<=6&&!bad.test(t))nom=t;});
+  var area='',ns=document.querySelectorAll('label,div,span,strong,b,td,th');
+  for(var i=0;i<ns.length&&!area;i++){var tt=ns[i].textContent.trim();if(/^Área\s*\/?\s*Asignatura\s*:?$/i.test(tt)||/^Área\s*:?$/i.test(tt)){var x=ns[i].nextElementSibling,s=x?(x.value||x.textContent||'').trim():'';if(!s&&ns[i].parentElement){var bx=ns[i].parentElement.querySelector('input,select');if(bx)s=(bx.value||'').trim();}if(s&&s.length<60)area=s;}}
+  var desc=[V('descripcion1'),V('descripcion2')].filter(Boolean).join('\n'),ya={},act={};
+  ALL.forEach(function(k){var v=V(k);if(!v)return;if(keys.indexOf(k)>=0)act[k]=v;else ya[k]=v;});
+  var known=ALL.concat(K1,K2,K3,['objetivo','descripcion1','descripcion2']),dx=[],ex={};
+  document.querySelectorAll('textarea,input[type="text"],select').forEach(function(e){
+    var n=e.name||e.id||'';if(!n||known.indexOf(n)>=0)return;
+    var v=(e.tagName==='SELECT'?((e.options[e.selectedIndex]||{}).text||''):(e.value||'')).trim();
+    if(!v||v.length<3||v.replace(/\s+/g,' ').toUpperCase()===nom)return;
+    if(/diagn|discapac|condici|trastorno/i.test(n)){dx.push(v.slice(0,200));return;}
+    if((v.length>25||/grado|curso|edad|grupo|periodo/i.test(n))&&Object.keys(ex).length<8)ex[n]=v.slice(0,500);
+  });
+  var obj=V('objetivo')||'';
+  if((desc+obj+dx.join('')+JSON.stringify(ya)).length<60){T('⚠️ Falta información');alert('⚠️ Hay muy poca información en la ficha para redactar algo personalizado sin inventar.\nDiligencia al menos la Descripción del estudiante (observaciones reales) y/o el objetivo del área, y vuelve a correr el script.');return;}
+  var hist=[];try{hist=JSON.parse(localStorage.getItem('pb_ia_hist')||'[]');}catch(e){}
+  var ctx={nombre:nom,nombreTitulo:nombreNatural(nom,desc),area:area,objetivo:obj,descripcion:desc,dx:dx.join('; '),ya:ya,act:modo==='todo'?act:{},extras:ex,keys:keys,hist:hist};
+  T('⏳ Leyendo la ficha y redactando '+keys.length+' campos… (10-40 s)');
+  cfg.status=T;
+  iaCore(cfg,ctx).then(function(out){
+    var ok=[];
+    Object.keys(out).forEach(function(k){var el=document.querySelector('[name="'+k+'"]');if(!el)return;el.value=out[k];['input','change','keyup','blur'].forEach(function(ev){el.dispatchEvent(new Event(ev,{bubbles:true}));});ok.push(k);});
+    ['barrera','ajuste','evaluacion'].forEach(function(k){if(out[k])hist.push(out[k].slice(0,60).replace(/\n/g,' '));});
+    try{localStorage.setItem('pb_ia_hist',JSON.stringify(hist.slice(-12)));}catch(e){}
+    var falt=keys.filter(function(k){return ok.indexOf(k)<0;});
+    T('✅ Listo: '+ok.length+' campos');
+    alert('✅ Diligenciados: '+ok.join(', ')+'.'+(falt.length?'\n⚠️ La IA no devolvió: '+falt.join(', ')+' (vuelve a correr el script).':'')+'\nRevisa el texto y guarda la planilla.');
+  }).catch(function(e){
+    if(e.red){
+      var pay=JSON.stringify({modo:modo,ctx:ctx});
+      T('⚠️ Sitio bloquea la IA — Plan B');
+      if(typeof copy==='function'){copy(pay);alert('⚠️ Este sitio bloquea las llamadas a Google ('+e.message+').\nCopié el contexto de la ficha. Ve a ProfeBolivar → PIAR → botón "Plan B", y luego pega aquí el script que te deje en el portapapeles.');}
+      else prompt('Sitio bloquea la IA. Copia esto y úsalo en el Plan B de ProfeBolivar:',pay);
+    }else{T('❌ '+e.message);alert('❌ '+e.message);}
+  });
+}
+
+function $i(x){return document.getElementById(x);}
+function iaLoadCfg(){if(IA_KEY_FIJA){$i('iaKey').value=IA_KEY_FIJA;$i('iaKeyEstado').textContent='— ✅ integrada en el archivo (funciona en cualquier PC)';}try{if(!IA_KEY_FIJA)$i('iaKey').value=localStorage.getItem('pb_ia_key')||'';$i('iaModels').value=localStorage.getItem('pb_ia_models')||IA_MODELOS_DEF;$i('iaAnon').checked=localStorage.getItem('pb_ia_anon')!=='0';$i('iaOtros').checked=localStorage.getItem('pb_ia_otros')!=='0';}catch(e){$i('iaModels').value=IA_MODELOS_DEF;}}
+function iaSaveCfg(){try{if(!IA_KEY_FIJA)localStorage.setItem('pb_ia_key',$i('iaKey').value.trim());localStorage.setItem('pb_ia_models',$i('iaModels').value.trim());localStorage.setItem('pb_ia_anon',$i('iaAnon').checked?'1':'0');localStorage.setItem('pb_ia_otros',$i('iaOtros').checked?'1':'0');}catch(e){}}
+window.addEventListener('load',iaLoadCfg);
+function iaCfg(){
+  iaSaveCfg();
+  return {key:(IA_KEY_FIJA||$i('iaKey').value).trim(),models:($i('iaModels').value||IA_MODELOS_DEF).split(',').map(function(x){return x.trim();}).filter(Boolean),anon:$i('iaAnon').checked,otros:$i('iaOtros').checked,
+    kb:IA_KB.map(function(k){return {t:k.t.source,n:k.n};}),areas:IA_AREAS,sys:IA_SYS,keydesc:IA_KEYDESC,estr:IA_ESTR,long:IA_LONG,aper:IA_APER};
+}
+function iaCopiar(modo){
+  var cfg=iaCfg();if(!cfg.key){sm('miaia','⚠️ Pega primero la API key de Gemini.','err');return;}
+  var s='(function(){var cfg='+JSON.stringify(cfg)+';var iaCore='+iaCore.toString()+';var iaPage='+iaPage.toString()+';iaPage(cfg,'+JSON.stringify(modo)+');})();';
+  navigator.clipboard.writeText(s).then(function(){sm('miaia','✅ Script copiado ('+(modo==='todo'?'MEJORAR TODO':'COMPLETAR lo que falta')+'). Ve a la ficha PIAR del estudiante, abre la consola (F12), pega y Enter. Para el siguiente estudiante pega el mismo script.','ok');});
+}
+function cpSinIA(forzar){
+  (forzar?cpPiarTodoForzar:cpPiarTodo)();
+  sm('miaia','✅ Script SIN IA copiado ('+(forzar?'MEJORAR lo ya diligenciado: reescribe los campos aunque tengan texto':'solo cuadros vacíos')+'). Pégalo en la consola de la ficha PIAR y Enter.','ok');
+}
+function iaFillLogic(D,F){
+  var ok=[],sk=[];
+  Object.keys(D).forEach(function(k){var el=document.querySelector('[name="'+k+'"]');if(!el||!D[k])return;if(!F&&el.value.trim()!==''){sk.push(k);return;}el.value=D[k];['input','change','keyup','blur'].forEach(function(ev){el.dispatchEvent(new Event(ev,{bubbles:true}));});ok.push(k);});
+  alert((ok.length?'✅ Diligenciados: '+ok.join(', ')+'.\nRevisa y guarda la planilla.':'ℹ️ No se llenó nada.')+(sk.length?'\n⏭ Ya tenían contenido: '+sk.join(', ')+'.':''));
+}
+function iaPlanB(){
+  var cfg=iaCfg();if(!cfg.key){sm('miaia','⚠️ Pega primero la API key de Gemini.','err');return;}
+  navigator.clipboard.readText().then(function(t){
+    var p=JSON.parse(t);if(!p.ctx||!p.ctx.keys)throw new Error('El portapapeles no tiene el contexto capturado por el script.');
+    sm('miaia','⏳ Generando desde aquí (Plan B)…','warn');
+    return iaCore(cfg,p.ctx).then(function(out){
+      var s='(function(){('+iaFillLogic.toString()+')('+JSON.stringify(out)+','+(p.modo==='todo'?'true':'false')+');})();';
+      return navigator.clipboard.writeText(s).then(function(){sm('miaia','✅ Listo. Script de relleno copiado: pégalo en la consola de la ficha del estudiante y Enter.','ok');});
+    });
+  }).catch(function(e){sm('miaia','❌ '+e.message,'err');});
+}
+
+// ══ MEJORAR REDACCIÓN — Características del Estudiante (descripcion1 / descripcion2) ══
+var IA_SYS_PULIR=[
+'Eres un docente de apoyo colombiano con excelente redacción, que revisa las "Características del Estudiante" de un PIAR (Decreto 1421 de 2017). Recibes dos textos: descripcion1 (descripción general: personalidad, gustos e intereses, lo que le desagrada, expectativas del estudiante y la familia, contexto) y descripcion2 (lo que hace, puede hacer o requiere apoyo: habilidades, competencias, apoyos).',
+'TAREA: devolver ambos textos mejor redactados, SIN perder información. Reglas: (1) Conserva TODOS los datos, hechos, características, fortalezas, apoyos y precauciones; si algo está dicho como no verificado, sigue diciéndose así. (2) Corrige ortografía, tildes, puntuación, concordancia y repeticiones. (3) Si hay párrafos repetidos o casi repetidos, fusiónalos en una sola versión sin perder ningún dato único. (4) Mejora la fluidez y el tono profesional de docente: párrafos claros, formulaciones precisas en vez de repetir "presenta dificultades", y empieza por lo que el estudiante puede hacer cuando sea natural. Vincula cada dificultad con la situación pedagógica donde aparece solo si el texto lo permite. (5) Puedes agregar precisiones únicamente si se derivan de lo ya escrito (la implicación pedagógica de un dato, una percepción no corroborada redactada con cautela). NO inventes hechos, cifras, diagnósticos, intereses, terapias ni antecedentes. (6) Tono respetuoso y no estigmatizante; la información familiar sensible se conserva con sobriedad y en lo pedagógicamente relevante. (7) Cada texto se queda en su casilla; no los infles: extensión igual o menor a la original. (8) Los marcadores {{N1}}, {{N2}}… son el nombre del estudiante: déjalos tal cual donde estén. (9) No abras todos los textos con la misma fórmula; respeta la voz del texto original.',
+'FALTANTES: en "faltantes" lista (máximo 4, frases cortas) los datos que el campo pide y NO aparecen en los textos (gustos e intereses, aspectos que le desagradan, expectativas del estudiante y de la familia, etc.). No los escribas dentro de los textos.',
+'SALIDA: SOLO un JSON válido: {"descripcion1":"...","descripcion2":"...","faltantes":["..."]}. Si una casilla llega vacía, devuélvela vacía. Usa saltos de línea dobles entre párrafos.'
+].join('\n\n');
+
+async function iaGemini(cfg,sys,user){
+  var body={system_instruction:{parts:[{text:sys}]},contents:[{role:'user',parts:[{text:user}]}],generationConfig:{maxOutputTokens:6000,temperature:0.7,thinkingConfig:{thinkingLevel:'low'}}};
+  var wait=function(ms){return new Promise(function(r){setTimeout(r,ms);});};
+  var last='';
+  for(var mi=0;mi<cfg.models.length;mi++){
+    var m=cfg.models[mi],sinThink=false;
+    if(mi>0&&cfg.status)cfg.status('↪ Probando con otro modelo: '+m+' (falló: '+last+')');
+    for(var it=1;it<=4;it++){
+      var ctl=new AbortController(),to=setTimeout(function(){ctl.abort();},45000);
+      try{
+        var b=JSON.parse(JSON.stringify(body));if(sinThink)delete b.generationConfig.thinkingConfig;
+        var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+m+':generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':cfg.key},body:JSON.stringify(b),signal:ctl.signal});
+        clearTimeout(to);
+        if(r.status===429){last='429 límite por minuto';if(it<4){if(cfg.status)cfg.status('⏳ Límite por minuto; espero 10 s…');await wait(10000);continue;}break;}
+        if(r.status===503){last='503 Google saturado';if(it<4){if(cfg.status)cfg.status('⏳ Google saturado ('+m+'), reintento '+it+' de 3…');await wait(2500*it);continue;}break;}
+        if(r.status===404){last='404 modelo no disponible: '+m;break;}
+        if(r.status===400&&!sinThink){sinThink=true;it--;continue;}
+        if(r.status===400||r.status===401||r.status===403){var dt=await r.text().catch(function(){return '';});var fe=new Error('Error '+r.status+' — revisa la API key: '+dt.slice(0,200));fe.fatal=true;throw fe;}
+        if(!r.ok){last='error '+r.status;break;}
+        var d=await r.json(),c=(d.candidates||[])[0],t='';
+        ((c&&c.content&&c.content.parts)||[]).forEach(function(p){if(typeof p.text==='string'&&!p.thought)t+=p.text;});
+        var i0=t.indexOf('{'),i1=t.lastIndexOf('}'),o=null;
+        if(i0>=0&&i1>i0){try{o=JSON.parse(t.slice(i0,i1+1));}catch(x){}}
+        if(!o){last='respuesta sin JSON utilizable';if(it<4)continue;break;}
+        return o;
+      }catch(e){
+        clearTimeout(to);if(e.fatal)throw e;
+        if(e.name==='TypeError'){var ne=new Error('RED: '+e.message);ne.red=true;throw ne;}
+        last=e.name==='AbortError'?'tiempo agotado':e.message;if(it<4)continue;break;
+      }
+    }
+  }
+  throw new Error('Ningún modelo respondió ('+last+')');
+}
+
+function iaPulirPage(cfg){
+  function F(n){return document.querySelector('[name="'+n+'"]');}
+  var e1=F('descripcion1'),e2=F('descripcion2');
+  if(!e1&&!e2){var nm=[];document.querySelectorAll('textarea').forEach(function(t){nm.push(t.name||t.id||'(sin nombre)');});alert('⚠️ No encontré los cuadros descripcion1/descripcion2. Textareas de esta página: '+nm.join(', ')+'\nPásale esa lista a Claude para ajustar el script.');return;}
+  var t1=e1?e1.value.trim():'',t2=e2?e2.value.trim():'';
+  if((t1+t2).length<80){alert('ℹ️ Las casillas de Características casi no tienen texto para mejorar. Escribe primero las observaciones.');return;}
+  var tb=document.getElementById('__pbToast')||document.body.appendChild(document.createElement('div'));
+  tb.id='__pbToast';tb.style.cssText='position:fixed;top:10px;right:10px;z-index:99999;background:#2d3a8c;color:#fff;padding:10px 14px;border-radius:8px;font:13px sans-serif;max-width:320px;box-shadow:0 2px 8px #0005';
+  function T(t){tb.textContent=t;}cfg.status=T;
+  window.__PB_ORIG={a:t1,b:t2};
+  window.restaurarDescripciones=function(){[['descripcion1','a'],['descripcion2','b']].forEach(function(p){var el=F(p[0]);if(el&&window.__PB_ORIG){el.value=window.__PB_ORIG[p[1]];['input','change','keyup','blur'].forEach(function(ev){el.dispatchEvent(new Event(ev,{bubbles:true}));});}});alert('↩️ Textos originales restaurados.');};
+  var bad=/PIAR|AJUSTE|BARRERA|EVALUAC|OBJETIVO|OTROS|PLAN|ESTUDIANTE|DISCAPACID|MEJORAMIENTO|COLEGIO|SEGUIMIENTO|INSTITUCI|EDUCATIVA|SEDE|JORNADA|ANEXO/,nom='';
+  document.querySelectorAll('input[type="text"]').forEach(function(el){var t=(el.value||'').trim().replace(/\s+/g,' ');if(!nom&&t.length>=6&&t.length<=55&&/^[A-ZÁÉÍÓÚÑ ]+$/.test(t)&&t.split(' ').length>=2&&t.split(' ').length<=6&&!bad.test(t))nom=t;});
+  var map=[],A=function(x){return x;};
+  if(cfg.anon&&nom){
+    var CL={a:'[aá]',e:'[eé]',i:'[ií]',o:'[oó]',u:'[uúü]',n:'[nñ]'};
+    var W=nom.split(/\s+/).filter(function(w){return w.length>2;}).map(function(w){return w.replace(/[^A-Za-zÁÉÍÓÚÑ]/g,'').replace(/[aeiounAEIOUN]/g,function(c){return CL[c.toLowerCase()];});}).join('|');
+    var L='(?<![A-Za-zÁÉÍÓÚáéíóúÑñ])',R='(?![A-Za-zÁÉÍÓÚáéíóúÑñ])';
+    var rx=new RegExp(L+'(?:'+W+')(?:\\s+(?:'+W+'))*'+R,'gi');
+    A=function(x){return x.replace(rx,function(m){var k=map.indexOf(m);if(k<0){map.push(m);k=map.length-1;}return '{{N'+(k+1)+'}}';});};
+  }
+  var hist=[];try{hist=JSON.parse(localStorage.getItem('pb_ia_hist2')||'[]');}catch(e){}
+  var user='descripcion1:\n'+A(t1)+'\n\ndescripcion2:\n'+A(t2)+'\n\nEVITAR arrancar con estas aperturas recientes:\n'+(hist.join('\n')||'(ninguna)')+'\n\nResponde solo con el JSON.';
+  T('⏳ Mejorando la redacción… (10-40 s)');
+  iaGemini(cfg,cfg.sys,user).then(function(o){
+    function R2(x){return String(x||'').replace(/\{\{N(\d+)\}\}/g,function(m,i){return map[i-1]||'el estudiante';}).replace(/\{\{NOMBRE\}\}/g,map[0]||'el estudiante').trim();}
+    var n1=R2(o.descripcion1),n2=R2(o.descripcion2),hechos=[];
+    function put(el,v,old){if(!el||!v||v.length<old.length*0.4)return false;el.value=v;['input','change','keyup','blur'].forEach(function(ev){el.dispatchEvent(new Event(ev,{bubbles:true}));});return true;}
+    var ok1=put(e1,n1,t1),ok2=put(e2,n2,t2);
+    hist.push(n1.slice(0,50).replace(/\n/g,' '));try{localStorage.setItem('pb_ia_hist2',JSON.stringify(hist.slice(-10)));}catch(e){}
+    var fal=(o.faltantes||[]).filter(Boolean).slice(0,4);
+    T('✅ Redacción mejorada');
+    alert('✅ Mejorado: '+[ok1?'Descripción general':'',ok2?'Lo que hace / requiere apoyo':''].filter(Boolean).join(' y ')+'.'+((!ok1&&t1)||(!ok2&&t2)?'\n⚠️ Una casilla quedó igual porque la respuesta venía demasiado corta (para no perder datos).':'')+(fal.length?'\n\n📝 El campo pide y no encontré: '+fal.join('; ')+'.':'')+'\n\nRevisa y guarda. Para deshacer: restaurarDescripciones()');
+  }).catch(function(e){T('❌ '+e.message);alert('❌ '+e.message);});
+}
+
+function pulirLocalPage(){
+  function F(n){return document.querySelector('[name="'+n+'"]');}
+  var e1=F('descripcion1'),e2=F('descripcion2');
+  if(!e1&&!e2){var nm=[];document.querySelectorAll('textarea').forEach(function(t){nm.push(t.name||t.id||'(sin nombre)');});alert('⚠️ No encontré los cuadros descripcion1/descripcion2. Textareas de esta página: '+nm.join(', '));return;}
+  var t1=e1?e1.value:'',t2=e2?e2.value:'';
+  window.__PB_ORIG={a:t1,b:t2};
+  window.restaurarDescripciones=function(){[['descripcion1','a'],['descripcion2','b']].forEach(function(p){var el=F(p[0]);if(el&&window.__PB_ORIG){el.value=window.__PB_ORIG[p[1]];['input','change','keyup','blur'].forEach(function(ev){el.dispatchEvent(new Event(ev,{bubbles:true}));});}});alert('↩️ Textos originales restaurados.');};
+  var LT='A-Za-zÁÉÍÓÚáéíóúÑñÜü';
+  var D={tambien:'también',ademas:'además',asi:'así',segun:'según',despues:'después',analisis:'análisis',habito:'hábito',habitos:'hábitos',numero:'número',numeros:'números',metodo:'método',metodos:'métodos',util:'útil',utiles:'útiles',facil:'fácil',dificil:'difícil',rapido:'rápido',rapida:'rápida',basico:'básico',basica:'básica',basicos:'básicos',basicas:'básicas',academico:'académico',academica:'académica',academicos:'académicos',academicas:'académicas',pedagogico:'pedagógico',pedagogica:'pedagógica',pedagogicos:'pedagógicos',pedagogicas:'pedagógicas',tecnico:'técnico',tecnica:'técnica',grafico:'gráfico',graficos:'gráficos',psicologico:'psicológico',psicologica:'psicológica',tecnologia:'tecnología',psicologia:'psicología',pedagogia:'pedagogía',geometria:'geometría',metodologia:'metodología',aveces:'a veces',atravez:'a través',distraido:'distraído',distraida:'distraída',matematicas:'matemáticas',matematica:'matemática',informatica:'informática',artistica:'artística',fisica:'física',quimica:'química',ortografia:'ortografía',logica:'lógica',logico:'lógico',autonomia:'autonomía'};
+  var nfix=0,ndup=0;
+  var dk=new RegExp('(^|[^'+LT+'])('+Object.keys(D).join('|')+')(?=[^'+LT+']|$)','gi');
+  function fix(p){
+    p=p.replace(/[ \t\u00a0]+/g,' ').replace(/ +([,.;:!?])/g,'$1');
+    p=p.replace(dk,function(m,pre,w){var r=D[w.toLowerCase()];if(!r)return m;nfix++;return pre+(w.charAt(0)!==w.charAt(0).toLowerCase()?r.charAt(0).toUpperCase()+r.slice(1):r);});
+    p=p.replace(new RegExp('(['+LT+']{2,})(c|s)ion(?=[^'+LT+']|$)','g'),function(m,a,b){nfix++;return a+b+'ión';});
+    p=p.replace(/([,;:])(?=[^\s\d])/g,'$1 ').replace(/\.(?=[A-ZÁÉÍÓÚÑ][a-záéíóúñ])/g,'. ');
+    p=p.replace(new RegExp('(['+LT+']{2,})\\s+\\1(?=[^'+LT+']|$)','gi'),function(m,a){nfix++;return a;});
+    p=p.replace(/(?<!etc)(?<!\bSr)(?<!\bSra)(?<!\bDr)([.!?]\s+)([a-záéíóúñ])/g,function(m,a,b){return a+b.toUpperCase();});
+    p=p.trim();if(p)p=p.charAt(0).toUpperCase()+p.slice(1);
+    if(p&&/[A-Za-zÁÉÍÓÚáéíóúÑñ0-9]$/.test(p))p+='.';
+    return p;
+  }
+  function key(p){return p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zñ0-9 ]/g,' ').replace(/\s+/g,' ').trim();}
+  function procesar(t){
+    var ps=t.split(/\n+/).map(fix).filter(Boolean),out=[],keys=[];
+    ps.forEach(function(p){
+      var k=key(p),set=k.split(' '),dup=false;
+      for(var i=0;i<keys.length;i++){
+        var o=keys[i],inter=set.filter(function(w){return o.set.indexOf(w)>=0;}).length,mn=Math.min(set.length,o.set.length);
+        if(k===o.k||(mn>8&&inter/mn>=0.9)){dup=true;if(p.length>out[i].length)out[i]=p;break;}
+      }
+      if(dup){ndup++;return;}
+      keys.push({k:k,set:set});out.push(p);
+    });
+    return out.join('\n\n');
+  }
+  function set(el,v){if(!el)return;el.value=v;['input','change','keyup','blur'].forEach(function(ev){el.dispatchEvent(new Event(ev,{bubbles:true}));});}
+  var n1=procesar(t1),n2=procesar(t2);set(e1,n1);set(e2,n2);
+  var all=n1+' '+n2,fal=[];
+  [[/gust|inter[eé]s|le agrada|disfruta|le encanta|prefiere|pasatiempo/i,'gustos e intereses'],[/desagrad|no le gusta|le molesta|le incomoda|rechaza/i,'aspectos que le desagradan'],[/expectativ|espera(n)? que|sue[ñn]a|aspira|proyecto de vida/i,'expectativas del estudiante y de la familia']].forEach(function(r){if(!r[0].test(all))fal.push(r[1]);});
+  alert('✅ Redacción revisada (sin IA).\n• Palabras/tildes/repeticiones corregidas: '+nfix+'\n• Párrafos duplicados fusionados: '+ndup+'\n• Puntuación, espacios y mayúsculas normalizados.'+(fal.length?'\n\n📝 El campo pide y no encontré: '+fal.join('; ')+'.':'')+'\n\nNota: sin IA no se reescribe ni se agregan detalles. Para eso usa el botón con IA.\nPara deshacer: restaurarDescripciones()');
+}
+function iaCopiarPulir(){
+  var c=iaCfg();if(!c.key){sm('mpulir','⚠️ Falta la API key.','err');return;}
+  var cfg={key:c.key,models:c.models,anon:c.anon,sys:IA_SYS_PULIR};
+  var s='(function(){var cfg='+JSON.stringify(cfg)+';var iaGemini='+iaGemini.toString()+';var iaPulirPage='+iaPulirPage.toString()+';iaPulirPage(cfg);})();';
+  navigator.clipboard.writeText(s).then(function(){sm('mpulir','✅ Script copiado. Pégalo en la consola (F12) de la ficha, en la pantalla de Características del Estudiante, y Enter.','ok');});
+}
+function cpPulirLocal(){
+  navigator.clipboard.writeText('('+pulirLocalPage.toString()+')();').then(function(){sm('mpulir','✅ Script SIN IA copiado. Pégalo en la consola de la ficha y Enter.','ok');});
+}
+
+// ══ v9: navegación, estado de IA y recordatorio al copiar ══
+var GRUPO={inicio:'inicio',formula:'notas',generar:'notas',notafinal:'notas',diag:'notas',limpiar:'notas',eval:'notas',comport:'comport',piar:'piar',guia:'guia'};
+function T(n){
+  var g=GRUPO[n]||n;if(g==='notas')window.__lastNotas=n;
+  Object.keys(GRUPO).forEach(function(x){var p=document.getElementById('pnl-'+x);if(p)p.classList.toggle('on',x===n);});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('on',t.dataset.g===g);});
+  var st=document.getElementById('subtabs');if(st)st.style.display=g==='notas'?'flex':'none';
+  document.querySelectorAll('.stab').forEach(function(t){t.classList.toggle('on',t.dataset.t===n);});
+}
+function irPulir(){T('piar');setTimeout(function(){var c=document.getElementById('cardPulir');if(c)c.scrollIntoView({behavior:'smooth',block:'start'});},60);}
+function piarCopiar(){
+  var m=(document.querySelector('input[name="pmotor"]:checked')||{}).value||'ia',a=(document.querySelector('input[name="palc"]:checked')||{}).value||'vacios';
+  if(m==='ia')iaCopiar(a);else cpSinIA(a==='todo');
+}
+var __hintT=null;
+function pbShow(html,ms){
+  var h=document.getElementById('pbHint');if(!h)return;
+  h.innerHTML=html;h.style.display='block';clearTimeout(__hintT);__hintT=setTimeout(function(){h.style.display='none';},ms||14000);
+}
+function pbHint(){
+  var p=document.querySelector('.pnl.on'),id=p?p.id:'',donde='Webcolegios';
+  if(id==='pnl-piar')donde='la <b>ficha PIAR del estudiante</b>';
+  else if(id==='pnl-comport')donde='la <b>planilla de Comportamiento</b>';
+  else if(/formula|generar|notafinal|diag|limpiar|eval/.test(id))donde='la <b>planilla de notas</b>';
+  pbShow('📋 <b>Script copiado.</b> Ahora: ① ve a '+donde+' en Webcolegios · ② <b>F12 → Console</b> · ③ <b>Ctrl+V</b> y <b>Enter</b> · ④ revisa y <b>guarda</b>.<br><span style="opacity:.6">(toca este aviso para cerrarlo)</span>',16000);
+}
+(function(){try{var o=navigator.clipboard.writeText.bind(navigator.clipboard);navigator.clipboard.writeText=function(t){return o(t).then(function(r){try{if(typeof t==='string'&&t.charAt(0)==='('&&t.length>150)pbHint();}catch(e){}return r;});};}catch(e){}})();
+function pbChip(txt,ok){
+  var c=document.getElementById('chipIA');if(c)c.textContent=txt;
+  var e=document.getElementById('inicioEstado');if(e)e.innerHTML=(ok===true?'✅ ':ok===false?'⚠️ ':'')+txt.replace(/^[^A-Za-zÁÉÍÓÚ¿]+/,'')+'<br><span style="color:#718096">Versión 9.0 · Sede San Martín</span>';
+}
+function pbEstadoIA(){
+  var k='';try{k=localStorage.getItem('pb_ia_key')||'';}catch(e){}
+  if(typeof IA_KEY_FIJA!=='undefined'&&IA_KEY_FIJA)pbChip('🤖 IA: key integrada (toca para probar)',true);
+  else if(k)pbChip('🤖 IA: key guardada (toca para probar)',true);
+  else pbChip('⚠️ IA: falta la API key (pestaña PIAR)',false);
+}
+async function iaProbar(){
+  var c=iaCfg();if(!c.key){pbChip('⚠️ IA: falta la API key (pestaña PIAR)',false);pbShow('⚠️ Falta la API key de Gemini. Pégala en la pestaña <b>PIAR</b>.',8000);return;}
+  pbChip('⏳ Probando la conexión con la IA…');var det='';
+  for(var i=0;i<c.models.length;i++){
+    var m=c.models[i],t0=performance.now();
+    try{
+      var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+m+':generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':c.key},body:JSON.stringify({contents:[{role:'user',parts:[{text:'Responde solo con la palabra: FUNCIONA'}]}],generationConfig:{maxOutputTokens:200,thinkingConfig:{thinkingLevel:'low'}}})});
+      var seg=((performance.now()-t0)/1000).toFixed(1);
+      if(r.ok){pbChip('✅ IA lista · '+m+' · '+seg+' s',true);pbShow('✅ <b>La IA responde</b> con '+m+' en '+seg+' s. Todo listo.',9000);return;}
+      det=m+' → HTTP '+r.status;
+      if(r.status===401||r.status===403){pbChip('❌ IA: la key fue rechazada',false);pbShow('❌ <b>La key fue rechazada</b> (HTTP '+r.status+'). Revisa que esté completa y activa en Google AI Studio.',12000);return;}
+      if(r.status===429){pbChip('⏳ IA: límite por minuto',false);pbShow('⏳ Límite de peticiones por minuto. Espera un momento y repite.',9000);return;}
+    }catch(e){pbChip('🚫 IA: sin conexión',false);pbShow('🚫 No hubo conexión con Google ('+e.message+'). Revisa tu internet.',10000);return;}
+  }
+  pbChip('❌ IA: ningún modelo respondió ('+det+')',false);pbShow('❌ Ningún modelo respondió ('+det+'). Prueba de nuevo en un minuto o cambia los modelos en la pestaña PIAR.',12000);
+}
+window.addEventListener('load',function(){setTimeout(pbEstadoIA,50);});
+</script>
+</body>
+</html>
